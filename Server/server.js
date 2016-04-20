@@ -6,13 +6,18 @@ var postDAO = require('./database/postDAO.js');
 var commentDAO = require('./database/commentDAO.js');
 var puid = require('./libs/lib.js');
 var callbackHelpers = require('./libs/callbackHelpers.js');
+var fs = require('fs');
 
 
 /*-----------------------------INIT--------------------------------*/
 app.set('port', 9000);
 var bodyParser = require('body-parser')
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
+app.use('/images', express.static('public'));
+app.use('/images', express.static('public/upload'));
+
+
 
 /*-----------------------------END---------------------------------*/
 
@@ -66,6 +71,54 @@ app.post('/api/getAllPostOfUser', function(req, res) {
 app.post('/api/getAllCommentsOfPost', function(req, res) {
 	commentDAO.getAllCommentsOfPost(req.body.postID, function(err, result){
 		callbackHelpers.getAllCommentsOfPostCallback(res, err, result);
+	})
+})
+
+app.post('/upload', function(req, res) {
+    console.log(req.files.image.originalFilename);
+    console.log(req.files.image.path);
+        fs.readFile(req.files.image.path, function (err, data){
+        var dirname = "/public";
+        var newPath = dirname + "/uploads/" +   req.files.image.originalFilename;
+        fs.writeFile(newPath, data, function (err) {
+        if(err){
+        	res.status(404);
+        	res.json({'response':"Error"});
+        }else {
+        	res.status(200);
+        	res.json({'response':"Saved"});
+}
+});
+});
+});
+
+
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
+app.post('/api/updateProfile', function(req, res) {
+	var path = __dirname + '/public/uploads/avatar_' + req.body.userID + '.jpg';
+	console.log("updateProfile");
+	fs.writeFile(path, new Buffer(req.body.avatar, "base64"), function(err){
+		if(err){
+        	res.status(404);
+        	console.log(err);
+        	res.json({'response':"Error"});
+        }else {
+        	res.status(200);
+        	res.json({'response':"Saved"});
+        }
 	})
 })
 /*------------------------------END-------------------------------*/
