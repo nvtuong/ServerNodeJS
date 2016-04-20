@@ -16,7 +16,7 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.json({limit: '50mb'}));       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use('/images', express.static('public'));
-app.use('/images', express.static('public/upload'));
+app.use('/images', express.static('public/uploads'));
 
 
 
@@ -89,6 +89,14 @@ app.post('/api/updateProfile', function(req, res) {
 	}
 	res.send();
 })
+
+
+app.post('/api/likeThisPost', function(req, res) {
+	postDAO.likeThisPost(req.body.userID, req.body.postID, function(err, result){
+		callbackHelpers.getAllCommentsOfPostCallback(res, err, result);
+	})
+})
+
 /*------------------------------END-------------------------------*/
 
 

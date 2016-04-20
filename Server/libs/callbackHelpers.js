@@ -77,7 +77,7 @@ module.exports.getSuggestFriendsCallback = function(response, err, result) {
 
 function parsePostModel(data){
 	var cols = ["postID", "content", "listImages", "Latitude", "Longitude", "postDate", 
-		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment"];
+		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isLike"];
 	var posts = [];
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];
@@ -134,5 +134,13 @@ module.exports.getAllCommentsOfPostCallback = function(response, err, result) {
 		response.status(200);
 		response.send(comments);
 	}
+}
+
+module.exports.likeThisPostCallBack = function(response, err, result) {
+console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else
+		response.status(200);
 }
 
