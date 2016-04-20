@@ -77,7 +77,7 @@ module.exports.getSuggestFriendsCallback = function(response, err, result) {
 
 function parsePostModel(data){
 	var cols = ["postID", "content", "listImages", "Latitude", "Longitude", "postDate", 
-		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isLike"];
+		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike"];
 	var posts = [];
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];
@@ -140,7 +140,39 @@ module.exports.likeThisPostCallBack = function(response, err, result) {
 console.log(result);
 	if(err)
 		responseBadRequest(response, err);
-	else
+	else{
 		response.status(200);
+		response.send();
+	}
 }
 
+module.exports.unLikeThisPostCallBack = function(response, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else{
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.shareThisPostCallBack = function(response, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else{
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.createNewCommentOfPostCallBack = function(response, err, result) {
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		console.log(result);
+		var comments = parseCommentModel(result.data);
+		response.status(200);
+		response.send(comments);
+	}
+}

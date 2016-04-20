@@ -90,13 +90,29 @@ app.post('/api/updateProfile', function(req, res) {
 	res.send();
 })
 
-
 app.post('/api/likeThisPost', function(req, res) {
 	postDAO.likeThisPost(req.body.userID, req.body.postID, function(err, result){
-		callbackHelpers.getAllCommentsOfPostCallback(res, err, result);
+		callbackHelpers.likeThisPostCallBack(res, err, result);
 	})
 })
 
+app.post('/api/unLikeThisPost', function(req, res) {
+	postDAO.unLikeThisPost(req.body.userID, req.body.postID, function(err, result){
+		callbackHelpers.unLikeThisPostCallBack(res, err, result);
+	})
+})
+
+app.post('/api/shareThisPost', function(req, res) {
+	postDAO.shareThisPost(req.body.userID, req.body.postID, function(err, result){
+		callbackHelpers.shareThisPostCallBack(res, err, result);
+	})
+})
+
+app.post('/api/createNewCommentOfPost', function(req, res) {
+	commentDAO.createNewCommentOfPost(req.body.postID, req.body.userID, req.body.content, req.body.day, function(err, result){
+		callbackHelpers.createNewCommentOfPostCallBack(res, err, result);
+	})
+})
 /*------------------------------END-------------------------------*/
 
 
