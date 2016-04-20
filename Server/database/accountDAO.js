@@ -36,7 +36,8 @@ module.exports.registerAccount = function(name, email, password, callback) {
 		else {
 			var id = puid.getUniqueID();
 			var query =  "CREATE (a:Account {id : '" + id + "', email : '" + email + "', password : '" + password + "'}) "
-                + "- [r : USER_ACCOUNT] -> (u:User{id : '" + id + "', name : '" + name + "', avatar: 'default.png'}) return u";
+                + "- [r : USER_ACCOUNT] -> (u:User{id : '" + id + "', name : '" + name + "', avatar: 'default.png'}) " 
+				+ "- [p:PRO_FILE] -> (fff:Profile)  return u";
     		database.runCypherQuery(query, null, callback)
 		}
 	})
