@@ -21,7 +21,13 @@ module.exports.getSuggestFriends = function(userID, callback) {
     database.runCypherQuery(query, null, callback);
 }	
 
-
+module.exports.getProfileOfUser = function(userID, callback) {
+	var query = "match (a:Account{id : '" + userID + "'})- [aa:USER_ACCOUNT] -> (u:User) - [pp:PRO_FILE]-> (p:Profile) "
+			+ " Optional match (u) - [f:FRIEND] - (u1:User) Optional match (u) - [post:POST] -> (p1:Post) "
+			+ " Optional match (u) <- [fol:FOLLOW] - (u2:User)  return u.avatar, u.name, p.gender, p.birthday, " 
+			+ " p.address, a.email, count (distinct f) as numFriend, count (distinct post) as numPost, count (distinct fol) as numFollow";
+    database.runCypherQuery(query, null, callback);
+}
 
 
 // Set profile picture of an User who has id is userId
