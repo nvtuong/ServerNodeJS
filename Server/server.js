@@ -33,6 +33,7 @@ app.post('/api/register', function(req, res){
 
 
 app.post('/api/login', function(req, res){
+	console.log("login");
 	accountDAO.loginWithEmailAndPassword(req.body.email, req.body.password, function(err, result){
 		callbackHelpers.loginCallback(res, err, result);
 	});
