@@ -176,3 +176,29 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		response.send(comments);
 	}
 }
+
+function parseProfileModel(result) {
+	var data = result.data[0];
+	var res = {};
+	res.avatar = data[0];
+	res.name = data[1];
+	res.gender = data[2];
+	res.birthday = data[3];
+	res.address = data[4];
+	res.email = data[5];
+	res.numFriend = data[6];
+	res.numPost = data[7];
+	res.numFollow = data[8];
+	var json = JSON.stringify(res);
+	return json;
+}
+module.exports.getProfileOfUserCallBack = function(response, err, result) {
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		console.log(result);
+		var json = parseProfileModel(result);
+		response.status(200);
+		response.send(json);
+	}
+}

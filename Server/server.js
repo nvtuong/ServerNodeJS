@@ -114,6 +114,12 @@ app.post('/api/createNewCommentOfPost', function(req, res) {
 		callbackHelpers.createNewCommentOfPostCallBack(res, err, result);
 	})
 })
+
+app.post('/api/getProfileOfUser', function(req, res) {
+	userDAO.getProfileOfUser(req.body.userID, function(err, result){
+		callbackHelpers.getProfileOfUserCallBack(res, err, result);
+	})
+})
 /*------------------------------END-------------------------------*/
 
 
