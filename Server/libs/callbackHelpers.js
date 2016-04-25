@@ -77,7 +77,7 @@ module.exports.getSuggestFriendsCallback = function(response, err, result) {
 
 function parsePostModel(data){
 	var cols = ["postID", "content", "listImages", "Latitude", "Longitude", "postDate", 
-		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike"];
+		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike", "tag"];
 	var posts = [];
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];

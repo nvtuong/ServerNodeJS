@@ -10,7 +10,7 @@ module.exports.getAllPostOfFriends = function(userID, callback) {
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
     database.runCypherQuery(query, null, callback);
 }
 
@@ -26,7 +26,7 @@ module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
    	database.runCypherQuery(query, null, callback);
 }
 
@@ -41,7 +41,7 @@ module.exports.unLikeThisPost = function(userID, postID, callback) {
 }
 
 module.exports.shareThisPost = function(userID, postID, callback) {
-	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) create (u) - [:SHARE] - > (p)";
+	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) create (u) - [:SHARE{name : 'shared'}] - > (p)";
    	database.runCypherQuery(query, null, callback);
 }
 
