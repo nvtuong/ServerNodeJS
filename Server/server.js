@@ -120,6 +120,18 @@ app.post('/api/getProfileOfUser', function(req, res) {
 		callbackHelpers.getProfileOfUserCallBack(res, err, result);
 	})
 })
+
+app.post('/api/searchFriendByEmail', function(req, res) {
+	userDAO.searchFriendByEmail(req.body.email, req.body.userID, function(err, result){
+		callbackHelpers.searchFriendByEmailCallBack(res, err, result);
+	})
+})
+
+app.post('/api/getRequestFriends', function(req, res) {
+	userDAO.getRequestFriends(req.body.userID, function(err, result){
+		callbackHelpers.getRequestFriendsCallBack(res, err, result);
+	})
+})
 /*------------------------------END-------------------------------*/
 
 

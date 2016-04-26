@@ -56,7 +56,7 @@ function parseFriendModel(data) {
 
 module.exports.getAllFriendsCallback = function(response, err, result) {
 	console.log(result);
-	if(err)
+	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
 		var friends = parseFriendModel(result.data);
@@ -66,7 +66,7 @@ module.exports.getAllFriendsCallback = function(response, err, result) {
 }
 
 module.exports.getSuggestFriendsCallback = function(response, err, result) {
-	if(err)
+	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
 		var friends = parseFriendModel(result.data);
@@ -92,7 +92,7 @@ function parsePostModel(data){
 
 module.exports.getAllPostOfFriendsCallback = function(response, err, result) {
 	console.log(result);
-	if(err)
+	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
 		var posts = parsePostModel(result.data);
@@ -102,7 +102,7 @@ module.exports.getAllPostOfFriendsCallback = function(response, err, result) {
 }
 
 module.exports.getAllPostOfUserCallback = function(response, err, result) {
-	if(err)
+	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
 		var posts = parsePostModel(result.data);
@@ -126,7 +126,7 @@ function parseCommentModel(data) {
 }
 
 module.exports.getAllCommentsOfPostCallback = function(response, err, result) {
-	if(err)
+	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
 		console.log(result);
@@ -166,12 +166,25 @@ module.exports.shareThisPostCallBack = function(response, err, result) {
 	}
 }
 
+function parseONECommentModel(result) {
+	var data = result.data[0];
+	var res = {};
+	res.id = data[0];
+	res.content = data[1];
+	res.commentDate = data[2];
+	res.userID = data[3];
+	res.userName = data[4];
+	res.userAvatar = data[5];
+	var json = JSON.stringify(res);
+	return json;
+}
+
 module.exports.createNewCommentOfPostCallBack = function(response, err, result) {
 	if(err)
 		responseBadRequest(response, err);
 	else {
 		console.log(result);
-		var comments = parseCommentModel(result.data);
+		var comments = parseONECommentModel(result);
 		response.status(200);
 		response.send(comments);
 	}
@@ -200,5 +213,39 @@ module.exports.getProfileOfUserCallBack = function(response, err, result) {
 		var json = parseProfileModel(result);
 		response.status(200);
 		response.send(json);
+	}
+}
+
+function parseONEFriendModel(result) {
+	var data = result.data[0];
+	var res = {};
+	res.id = data[0];
+	res.avatar = data[1];
+	res.name = data[2];
+	res.numFriend = data[3];
+	res.mutualFriend = data[4];
+	var json = JSON.stringify(res);
+	return json;
+}
+module.exports.searchFriendByEmailCallBack = function(response, err, result) {
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else {
+		console.log(result);
+		var json = parseONEFriendModel(result);
+		response.status(200);
+		response.send(json);
+	}
+}
+
+module.exports.getRequestFriendsCallBack = function(response, err, result) {
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else {
+		var friends = parseFriendModel(result.data);
+		response.status(200);
+		response.send(friends);
 	}
 }

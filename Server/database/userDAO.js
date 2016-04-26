@@ -29,6 +29,19 @@ module.exports.getProfileOfUser = function(userID, callback) {
     database.runCypherQuery(query, null, callback);
 }
 
+module.exports.searchFriendByEmail = function(email, userID, callback) {
+	var query = "match (a:Account{email : '" + email + "'}) - [:USER_ACCOUNT] -> (u:User), (uu:User{id : '" + userID + "'}) "
+			+ " Optional match (u) - [f:FRIEND] -> (u1:User) Optional match (u1) - [ff:FRIEND] -> (uu) "
+			+ " return u.id, u.avatar, u.name, count (distinct f) as numFriend, count (distinct ff) as mutualFriend";
+	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.getRequestFriends = function(userID, callback) {
+	var query = "match (me:User{id : '" + userID + "'}) <- [:FRIEND_REQUEST] - (u:User) "
+			+ " Optional match (u) - [f:FRIEND]-> (u1:User) Optional match (u) - [:FRIEND] -> (u2:User) -[:FRIEND] -> (me) "
+			+ " return u.id, u.name, u.avatar, count (distinct f) as numFriend, count (distinct u2) as mutualFriend";
+	database.runCypherQuery(query, null, callback);
+}
 
 // Set profile picture of an User who has id is userId
 // return true or false
