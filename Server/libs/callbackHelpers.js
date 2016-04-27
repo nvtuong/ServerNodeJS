@@ -205,6 +205,8 @@ function parseProfileModel(result) {
 	var json = JSON.stringify(res);
 	return json;
 }
+
+
 module.exports.getProfileOfUserCallBack = function(response, err, result) {
 	if(err)
 		responseBadRequest(response, err);
@@ -247,5 +249,24 @@ module.exports.getRequestFriendsCallBack = function(response, err, result) {
 		var friends = parseFriendModel(result.data);
 		response.status(200);
 		response.send(friends);
+	}
+}
+
+module.exports.updateUserProfileCallback = function(response, err, result) {
+	if(!err) {
+		console.log(result);
+		var data = result.data[0];
+		var res = {};
+		res.name = data[0];
+		res.avatar = data[1];
+		res.address = data[2];
+		res.birthday = data[3];
+		res.gender = data[4];
+		var json = JSON.stringify(res);
+		response.status(200);
+		response.send(json);
+	}
+	else {
+		responseBadRequest(response, err);
 	}
 }

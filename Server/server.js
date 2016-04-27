@@ -79,16 +79,21 @@ app.post('/api/getAllCommentsOfPost', function(req, res) {
 
 app.post('/api/updateProfile', function(req, res) {
 	console.log("updateProfile");
-	if(req.body.avatar)	{
-		var path = __dirname + '/public/uploads/avatar_' + req.body.userID + '.jpg';
-		writingHelper.writeImage(path, req.body.avatar, function(err){
+	var fileName;
+	if(req.body.binaryImage) {
+		fileName = req.body.userID + '.jpg';
+		var path = __dirname + '/public/uploads/' + fileName;
+		writingHelper.writeImage(path, req.body.binaryImage, function(err){
 			if(err){
 				res.status(404);
 				res.send(err);
 			}
 		})
 	}
-	res.send();
+	userDAO.updateUserProfile(req.body.userID, req.body.username, req.body.address, req.body.birthday, 
+								req.body.gender, fileName, function(err, result) {
+		callbackHelpers.updateUserProfileCallback(res, err, result);
+	});
 })
 
 app.post('/api/likeThisPost', function(req, res) {

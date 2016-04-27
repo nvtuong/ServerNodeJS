@@ -45,6 +45,19 @@ module.exports.getRequestFriends = function(userID, callback) {
 
 // Set profile picture of an User who has id is userId
 // return true or false
-module.exports.setProfilePicture = function(userID, picture) {
-
+module.exports.updateUserProfile = function(userID, username, address, birthday, gender, imageUrl, callback) {
+	var query;
+	if(imageUrl) {
+		query = "match (u: User{id: '"+ userID +"'}) -[:PRO_FILE]-> (p: Profile) "
+				+ "set u.name='" + username + "', p.address='" + address + "', p.birthday= '" + birthday + "',"
+				+ " p.gender='" + gender + "', u.avatar='" + imageUrl + "' "
+				+ " return u.name, u.avatar, p.address, p.birthday, p.gender";
+	}
+	else {
+		query = "match (u: User{id: '"+ userID +"'}) -[:PRO_FILE]-> (p: Profile) "
+				+ "set u.name='" + username + "', p.address='" + address + "', p.birthday= '" + birthday + "',"
+				+ " p.gender='" + gender + "'"
+				+ " return u.name, u.avatar, p.address, p.birthday, p.gender";
+	}
+	database.runCypherQuery(query, null, callback);
 }
