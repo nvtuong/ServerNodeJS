@@ -45,6 +45,14 @@ module.exports.shareThisPost = function(userID, postID, callback) {
    	database.runCypherQuery(query, null, callback);
 }
 
+module.exports.createPost = function(postID, userID, content, date, Latitude, Longitude, feeling, listImages, tag, callback) {
+	var query = "match (u:User{id : '" + userID + "'}) create (u) - [r:POST{name : 'posted'}] -> " 
+		+ "(p:Post{id :'" + postID + "', content : '" + content + "', listImage: '"+ listImages + "', tag :'" + tag + "', "
+		+" feeling : '" + feeling + "', Latitude : '" +  Latitude + "', Longitude : '" + Longitude + "', day :'" + date +"'})"
+   		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
+		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, p.tag";	
+   	database.runCypherQuery(query, null, callback);
+}
 
 
 

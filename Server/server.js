@@ -137,6 +137,33 @@ app.post('/api/getRequestFriends', function(req, res) {
 		callbackHelpers.getRequestFriendsCallBack(res, err, result);
 	})
 })
+
+app.post('/api/uploadImage', function(req, res) {
+	var fileName;
+	if(req.body.binary) {
+		fileName = req.body.postID + req.body.indexs + '.jpg';
+		var path = __dirname + '/public/uploads/' + fileName;
+		writingHelper.writeImage(path, req.body.binary, function(err){
+			if(err){
+				res.status(404);
+				res.send(err);
+			}
+			console.log("up okkkkkkk")
+			res.status(200);
+			res.send(fileName);
+		})
+	}
+})
+
+app.post('/api/createPost', function(req, res) {
+	console.log("createPost");
+	console.log(req.body);
+		postDAO.createPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
+		req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
+		req.body.tag, function(err, result){
+		callbackHelpers.createPostCallBack(res, err, result);
+	})
+})
 /*------------------------------END-------------------------------*/
 
 

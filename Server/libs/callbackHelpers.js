@@ -270,3 +270,14 @@ module.exports.updateUserProfileCallback = function(response, err, result) {
 		responseBadRequest(response, err);
 	}
 }
+
+module.exports.createPostCallBack = function(response, err, result) {
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else {
+		var post = parsePostModel(result.data)
+		response.status(200);
+		response.send(post[0]);
+	}
+}
