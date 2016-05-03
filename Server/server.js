@@ -79,9 +79,8 @@ app.post('/api/getAllCommentsOfPost', function(req, res) {
 
 app.post('/api/updateProfile', function(req, res) {
 	console.log("updateProfile");
-	var fileName;
+	var fileName = req.body.userID + '.jpg';
 	if(req.body.binaryImage) {
-		fileName = req.body.userID + '.jpg';
 		var path = __dirname + '/public/uploads/' + fileName;
 		writingHelper.writeImage(path, req.body.binaryImage, function(err){
 			if(err){
@@ -91,7 +90,7 @@ app.post('/api/updateProfile', function(req, res) {
 		})
 	}
 	userDAO.updateUserProfile(req.body.userID, req.body.username, req.body.address, req.body.birthday, 
-								req.body.gender, fileName, function(err, result) {
+					req.body.gender, fileName, function(err, result) {
 		callbackHelpers.updateUserProfileCallback(res, err, result);
 	});
 })
