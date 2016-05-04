@@ -55,6 +55,41 @@ module.exports.createPost = function(postID, userID, content, date, Latitude, Lo
 }
 
 
+module.exports.SearchPostByTag = function(userID, tag, callback) {
+	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) "
+			+ "where '" + tag + "' in p.tag "
+			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
+			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ "Optional match (u) -[iss:LIKE]-> (p) "
+			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+    database.runCypherQuery(query, null, callback);
+}
 
+module.exports.SearchPostByName = function(userID, name, callback) {
+	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) "
+			+ "where '" + name + "' = uu.name "
+			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
+			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ "Optional match (u) -[iss:LIKE]-> (p) "
+			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+    database.runCypherQuery(query, null, callback);
+}
+
+module.exports.SearchPostByDistance = function(userID, Latitude, Longitude, distance, callback) {
+	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) "
+			+ "where 2000 * 6371 * asin(sqrt(haversin(radians(p.Latitude - " + Latitude + ")) + cos(radians(p.Latitude)) "
+			+ "* cos(radians(" + Latitude + ")) * haversin(radians(p.Longitude - " + Longitude + ")))) < " + distance + " "
+			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
+			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ "Optional match (u) -[iss:LIKE]-> (p) "
+			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+    database.runCypherQuery(query, null, callback);
+}
 
 

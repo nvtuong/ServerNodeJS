@@ -158,16 +158,38 @@ app.post('/api/uploadImage', function(req, res) {
 app.post('/api/createPost', function(req, res) {
 	console.log("createPost");
 	console.log(req.body);
-		postDAO.createPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
-		req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
-		req.body.tag, function(err, result){
-		callbackHelpers.createPostCallBack(res, err, result);
+	postDAO.createPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
+			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
+			req.body.tag, function(err, result){
+					callbackHelpers.createPostCallBack(res, err, result);
 	})
 })
+
+app.post('/api/SearchPostByTag', function(req, res) {
+	postDAO.SearchPostByTag(req.body.userID, req.body.tag, function(err, result) {
+		callbackHelpers.SearchPostByTagCallback(res, err, result);
+	})
+})
+
+app.post('/api/GetListFriendName', function(req, res) {
+	userDAO.GetListFriendName(req.body.userID, function(err, result) {
+		callbackHelpers.GetListFriendNameCallback(res, err, result);
+	})
+})
+
+app.post('/api/SearchPostByName', function(req, res) {
+	postDAO.SearchPostByName(req.body.userID, req.body.name, function(err, result) {
+		callbackHelpers.SearchPostByNameCallback(res, err, result);
+	})
+})
+
+app.post('/api/SearchPostByDistance', function(req, res) {
+	postDAO.SearchPostByDistance(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, function(err, result) {
+		callbackHelpers.SearchPostByDistanceCallback(res, err, result);
+	})
+})
+
 /*------------------------------END-------------------------------*/
-
-
-
 
 
 app.get('/api/getSampleId', function(req, res){
