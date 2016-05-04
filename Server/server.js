@@ -81,7 +81,7 @@ app.post('/api/updateProfile', function(req, res) {
 	console.log("updateProfile");
 	var fileName;
 	if(req.body.binaryImage) {
-		fileName = req.body.userID + '.jpg';
+		fileName = puid.getUniqueID() + '.jpg';
 		var path = __dirname + '/public/uploads/' + fileName;
 		writingHelper.writeImage(path, req.body.binaryImage, function(err){
 			if(err){
