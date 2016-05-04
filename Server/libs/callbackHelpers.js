@@ -82,9 +82,18 @@ function parsePostModel(data){
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];
 		var post = {};
-		for (var col = 0; col < cols.length; col++) {
+		for (var col = 0; col < cols.length - 1; col++) {
 			post[cols[col]] = item[col];
 		}
+		var tags = item[cols.length - 1];
+		var stringTags = "";
+		for (var tag = 0; tag < tags.length; tag++)
+			stringTags += tags[tag] + ",";
+		if (stringTags.length == 0)
+			stringTags = "No Tag ";
+		stringTags = stringTags.slice(0, stringTags.length - 1);
+		stringTags = stringTags.replace(/,/g, ", ");
+		post["tag"] = stringTags;
 		posts.push(post);
 	}
 	return posts;
