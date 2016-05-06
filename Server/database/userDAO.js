@@ -8,7 +8,7 @@ module.exports.getUserInfor = function(userID, callback) {
 }
 
 module.exports.getAllFriends = function(userID, callback) {
-	var query = "match (me:User{id : '" + userID + "'}) - [FRIEND] -> (u:User) - [r:FRIEND] -> (ff:User) "
+	var query = "match (me:User{id : '" + userID + "'}) - [:FRIEND] -> (u:User) - [r:FRIEND] -> (ff:User) "
                 + "optional match (me)- [m:FRIEND]->(ff) return u.id, u.name, u.avatar, "
                 + "count(distinct r) as numFriend, count (distinct m) as mutualFriend order by numFriend desc";
     database.runCypherQuery(query, null, callback);
@@ -31,8 +31,10 @@ module.exports.getProfileOfUser = function(userID, callback) {
 
 module.exports.searchFriendByEmail = function(email, userID, callback) {
 	var query = "match (a:Account{email : '" + email + "'}) - [:USER_ACCOUNT] -> (u:User), (uu:User{id : '" + userID + "'}) "
+			+ " where (u) <> (uu) "
 			+ " Optional match (u) - [f:FRIEND] -> (u1:User) Optional match (u1) - [ff:FRIEND] -> (uu) "
-			+ " return u.id, u.avatar, u.name, count (distinct f) as numFriend, count (distinct ff) as mutualFriend";
+			+ " optional match (u) - [friend:FRIEND] -> (uu)"
+			+ " return u.id, u.avatar, u.name, count (distinct f) as numFriend, count (distinct ff) as mutualFriend, count (friend) as isFriend";
 	database.runCypherQuery(query, null, callback);
 }
 
@@ -64,6 +66,27 @@ module.exports.updateUserProfile = function(userID, username, address, birthday,
 
 module.exports.GetListFriendName = function(userID, callback) {
 	var query = "match (me:User{id : '" + userID + "'}) - [FRIEND] -> (u:User) return u.name";
+    database.runCypherQuery(query, null, callback);
+}
+
+module.exports.deleteAddFriendRequest = function(userID, friendID, callback) {
+	
+	var query = "match (me:User{id : '" + userID + "'}) <- [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r";
+    database.runCypherQuery(query, null, callback);
+}
+
+module.exports.deleteFriend = function(userID, friendID, callback) {
+	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND] - (friend:User{id : '" + friendID + "'}) delete r";
+    database.runCypherQuery(query, null, callback);
+}
+
+module.exports.addFriend = function(userID, friendID, callback) {
+	var query = "match (me:User{id : '" + userID + "'}), (friend:User{id : '" + friendID + "'}) MERGE (me) - [r:FRIEND_REQUEST] -> (friend)";
+    database.runCypherQuery(query, null, callback);
+}
+
+module.exports.confirmFriendRequest = function(userID, friendID, callback) {
+	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r merge (me) - [ff:FRIEND] -> (friend) merge (me) <- [ff2:FRIEND] - (friend) ";
     database.runCypherQuery(query, null, callback);
 }
 

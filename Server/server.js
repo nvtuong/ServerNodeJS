@@ -189,6 +189,34 @@ app.post('/api/SearchPostByDistance', function(req, res) {
 	})
 })
 
+app.post('/api/deleteAddFriendRequest', function(req, res) {
+	console.log("deleteAddFriendRequest");
+	userDAO.deleteAddFriendRequest(req.body.userID, req.body.friendID, function(err, result) {
+		callbackHelpers.deleteAddFriendRequestCallback(res, err, result);
+	})
+})
+
+app.post('/api/deleteFriend', function(req, res) {
+	console.log("deleteFriend");
+	userDAO.deleteFriend(req.body.userID, req.body.friendID, function(err, result) {
+		callbackHelpers.deleteFriendCallback(res, err, result);
+	})
+})
+
+app.post('/api/addFriend', function(req, res) {
+	console.log("addFriend");
+	userDAO.addFriend(req.body.userID, req.body.friendID, function(err, result) {
+		callbackHelpers.addFriendCallback(res, err, result);
+	})
+})
+
+app.post('/api/confirmFriendRequest', function(req, res) {
+	console.log("confirmFriendRequest");
+	userDAO.confirmFriendRequest(req.body.userID, req.body.friendID, function(err, result) {
+		callbackHelpers.confirmFriendRequestCallback(res, err, result);
+	})
+})
+
 /*------------------------------END-------------------------------*/
 
 

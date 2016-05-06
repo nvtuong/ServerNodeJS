@@ -235,6 +235,7 @@ function parseONEFriendModel(result) {
 	res.name = data[2];
 	res.numFriend = data[3];
 	res.mutualFriend = data[4];
+	res.isFriend = data[5];
 	var json = JSON.stringify(res);
 	return json;
 }
@@ -331,5 +332,45 @@ module.exports.SearchPostByDistanceCallback = function(response, err, result) {
 		var posts = parsePostModel(result.data);
 		response.status(200);
 		response.send(posts);
+	}
+}
+
+module.exports.deleteAddFriendRequestCallback = function(response, err, result) {
+	console.log("deleteAddFriendRequestCallback");
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.deleteFriendCallback = function(response, err, result) {
+	console.log("deleteFriendCallback");
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.addFriendCallback = function(response, err, result) {
+	console.log("addFriendCallback");
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.confirmFriendRequestCallback = function(response, err, result) {
+	console.log("confirmFriendRequestCallback");
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
 	}
 }
