@@ -25,12 +25,10 @@ app.use('/images', express.static('public/uploads'));
 
 /*------------------------------API--------------------------------*/
 app.post('/api/register', function(req, res){
-	accountDAO.registerAccount(req.body.name, req.body.email, req.body.password, function(err, result){
+	accountDAO.registerAccount(req.body.name, req.body.email, req.body.password, req.body.defaultLatitude, req.body.defaultLongitude, function(err, result){
 		callbackHelpers.registerCallback(res, err, result);
 	})
 })
-
-
 
 app.post('/api/login', function(req, res){
 	console.log("login");

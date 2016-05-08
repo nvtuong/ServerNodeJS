@@ -1,12 +1,3 @@
-function parseLoginModel(result) {
-	var data = result.data[0];
-	var res = {};
-	res.id = data[0];
-	res.name = data[1];
-	res.avatar = data[2];
-	var json = JSON.stringify(res);
-	return json;
-}
 
 function responseBadRequest(response, err) {
 	response.status(404);
@@ -19,10 +10,8 @@ module.exports.loginCallback = function(response, err, result) {
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
-		var json = parseLoginModel(result);
 		response.status(200);
-		response.type('application/json');
-		response.send(json);
+		response.send(result.data[0]);
 	}
 }
 
