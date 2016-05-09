@@ -315,9 +315,10 @@ module.exports.SearchPostByNameCallback = function(response, err, result) {
 
 module.exports.SearchPostByDistanceCallback = function(response, err, result) {
 	console.log(result);
-	if(err || result.data[0] == null)
+	if(err || result.data[0] == null){
+		console.log(err);
 		responseBadRequest(response, err);
-	else {
+	}else {
 		var posts = parsePostModel(result.data);
 		response.status(200);
 		response.send(posts);
