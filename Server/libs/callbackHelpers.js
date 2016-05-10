@@ -281,31 +281,12 @@ module.exports.createPostCallBack = function(response, err, result) {
 	}
 }
 
-module.exports.SearchPostByTagCallback = function(response, err, result) {
+module.exports.SearchPostCallback = function(response, err, result) {
 	console.log(result);
-	if(err || result.data[0] == null)
+	if(err || result.data[0] == null){
+		console.log(err);
 		responseBadRequest(response, err);
-	else {
-		var posts = parsePostModel(result.data);
-		response.status(200);
-		response.send(posts);
 	}
-}
-
-module.exports.GetListFriendNameCallback = function(response, err, result) {
-	console.log(result.data);
-	if(err || result.data[0] == null)
-		responseBadRequest(response, err);
-	else {
-		response.status(200);
-		response.send(result.data);
-	}
-}
-
-module.exports.SearchPostByNameCallback = function(response, err, result) {
-	console.log(result);
-	if(err || result.data[0] == null)
-		responseBadRequest(response, err);
 	else {
 		var posts = parsePostModel(result.data);
 		response.status(200);

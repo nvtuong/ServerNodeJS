@@ -64,11 +64,6 @@ module.exports.updateUserProfile = function(userID, username, address, birthday,
 	database.runCypherQuery(query, null, callback);
 }
 
-module.exports.GetListFriendName = function(userID, callback) {
-	var query = "match (me:User{id : '" + userID + "'}) - [FRIEND] -> (u:User) return u.name";
-    database.runCypherQuery(query, null, callback);
-}
-
 module.exports.deleteAddFriendRequest = function(userID, friendID, callback) {
 	
 	var query = "match (me:User{id : '" + userID + "'}) <- [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r";

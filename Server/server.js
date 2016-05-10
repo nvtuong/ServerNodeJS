@@ -163,21 +163,9 @@ app.post('/api/createPost', function(req, res) {
 	})
 })
 
-app.post('/api/SearchPostByTag', function(req, res) {
-	postDAO.SearchPostByTag(req.body.userID, req.body.tag, function(err, result) {
-		callbackHelpers.SearchPostByTagCallback(res, err, result);
-	})
-})
-
-app.post('/api/GetListFriendName', function(req, res) {
-	userDAO.GetListFriendName(req.body.userID, function(err, result) {
-		callbackHelpers.GetListFriendNameCallback(res, err, result);
-	})
-})
-
-app.post('/api/SearchPostByName', function(req, res) {
-	postDAO.SearchPostByName(req.body.userID, req.body.name, function(err, result) {
-		callbackHelpers.SearchPostByNameCallback(res, err, result);
+app.post('/api/SearchPost', function(req, res) {
+	postDAO.SearchPost(req.body.userID, req.body.params, function(err, result) {
+		callbackHelpers.SearchPostCallback(res, err, result);
 	})
 })
 

@@ -54,28 +54,15 @@ module.exports.createPost = function(postID, userID, content, date, Latitude, Lo
    	database.runCypherQuery(query, null, callback);
 }
 
-
-module.exports.SearchPostByTag = function(userID, tag, callback) {
+module.exports.SearchPost = function(userID, params, callback) {
 	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) "
-			+ "where '" + tag + "' in p.tag "
+			+ "where uu.name =~ '.*" + params + ".*' or p.content =~ '.*" + params + ".*' or (any (tag in p.tag where tag =~ '.*" + params + ".*')) "
 			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
 			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
-    database.runCypherQuery(query, null, callback);
-}
-
-module.exports.SearchPostByName = function(userID, name, callback) {
-	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) "
-			+ "where '" + name + "' = uu.name "
-			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
-			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
-			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
-			+ "Optional match (u) -[iss:LIKE]-> (p) "
-			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag LIMIT 10";
     database.runCypherQuery(query, null, callback);
 }
 
