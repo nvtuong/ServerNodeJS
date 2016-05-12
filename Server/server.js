@@ -4,6 +4,7 @@ var accountDAO = require('./database/accountDAO.js');
 var userDAO = require('./database/userDAO.js');
 var postDAO = require('./database/postDAO.js');
 var commentDAO = require('./database/commentDAO.js');
+var notificationDAO = require('./database/notificationDAO.js');
 var puid = require('./libs/lib.js');
 var callbackHelpers = require('./libs/callbackHelpers.js');
 var fs = require('fs');
@@ -191,15 +192,45 @@ app.post('/api/deleteFriend', function(req, res) {
 
 app.post('/api/addFriend', function(req, res) {
 	console.log("addFriend");
-	userDAO.addFriend(req.body.userID, req.body.friendID, function(err, result) {
+	userDAO.addFriend(req.body.userID, req.body.friendID, req.body.day, function(err, result) {
 		callbackHelpers.addFriendCallback(res, err, result);
 	})
 })
 
 app.post('/api/confirmFriendRequest', function(req, res) {
 	console.log("confirmFriendRequest");
-	userDAO.confirmFriendRequest(req.body.userID, req.body.friendID, function(err, result) {
+	userDAO.confirmFriendRequest(req.body.userID, req.body.friendID, req.body.day, function(err, result) {
 		callbackHelpers.confirmFriendRequestCallback(res, err, result);
+	})
+})
+
+app.post('/api/getUserNotification', function(req, res) {
+	notificationDAO.getUserNotification(req.body.userID, function(err, result) {
+		callbackHelpers.getUserNotificationCallback(res, err, result);
+	})
+})
+
+app.post('/api/makeNotificationMyPost', function(req, res) {
+	notificationDAO.makeNotificationMyPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
+		callbackHelpers.makeNotificationMyPostCallback(res, err, result);
+	})
+})
+
+app.post('/api/makeNotificationFriendPost', function(req, res) {
+	notificationDAO.makeNotificationFriendPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
+		callbackHelpers.makeNotificationFriendPostCallback(res, err, result);
+	})
+})
+
+app.post('/api/deleteNotification', function(req, res) {
+	notificationDAO.deleteNotification(req.body.userID, req.body.dataID, function(err, result) {
+		callbackHelpers.deleteNotificationCallback(res, err, result);
+	})
+})
+
+app.post('/api/getPostDetail', function(req, res) {
+	postDAO.getPostDetail(req.body.userID, req.body.dataID, function(err, result) {
+		callbackHelpers.getPostDetailCallback(res, err, result);
 	})
 })
 

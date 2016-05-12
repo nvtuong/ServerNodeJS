@@ -1,6 +1,5 @@
 var database = require('./database.js');
 
-
 // return a list of Post model contains posts of all friends
 // limit 20 posts per list
 module.exports.getAllPostOfFriends = function(userID, callback) {
@@ -13,9 +12,6 @@ module.exports.getAllPostOfFriends = function(userID, callback) {
 			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
     database.runCypherQuery(query, null, callback);
 }
-
-
-
 
 // return a list of Post model contains posts which has been shared or post by a user
 // limit 20 post per one request
@@ -79,4 +75,13 @@ module.exports.SearchPostByDistance = function(userID, Latitude, Longitude, dist
     database.runCypherQuery(query, null, callback);
 }
 
-
+module.exports.getPostDetail = function(userID, dataID, callback) {
+	var query = "match (p:Post{id : '" + dataID + "'}) <- [r:POST] - (u:User) "
+			+ " Optional match (p) <- [s:SHARE] - (u1:User) "
+			+ " Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ " Optional match (me:User{id : '" + userID + "'}) -[iss:LIKE]-> (p) "
+			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+   	database.runCypherQuery(query, null, callback);
+}

@@ -178,8 +178,10 @@ function parseONECommentModel(result) {
 }
 
 module.exports.createNewCommentOfPostCallBack = function(response, err, result) {
-	if(err)
+	if(err){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
 		console.log(result);
 		var comments = parseONECommentModel(result);
@@ -343,5 +345,72 @@ module.exports.confirmFriendRequestCallback = function(response, err, result) {
 	else {
 		response.status(200);
 		response.send();
+	}
+}
+
+function parseNotification(data) {
+	var friends = [];
+	for(var i = 0; i < data.length; i++) {
+		var item = data[i];
+		friends.push({userAvatar: item[1], userName: item[0], date: item[3], content: item[2], dataID: item[4]});
+	}
+	return friends;
+}
+
+module.exports.getUserNotificationCallback = function(response, err, result) {
+	console.log("getUserNotificationCallback");
+	if(err || result.data[0] == null){
+		responseBadRequest(response, err);
+	}
+	else {
+		console.log(result);
+		var notification = parseNotification(result.data);
+		response.status(200);
+		response.send(notification);
+	}
+}
+
+module.exports.makeNotificationMyPostCallback = function(response, err, result) {
+	console.log("My  Post  Callback");
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else{
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.makeNotificationFriendPostCallback = function(response, err, result) {
+	console.log("Friend Post  Callback");
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else{
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.deleteNotificationCallback = function(response, err, result) {
+	console.log("deleteNotificationCallback");
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else{
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.getPostDetailCallback = function(response, err, result) {
+	console.log(result);
+	if(err || result.data[0] == null){
+		console.log(err);
+		responseBadRequest(response, err);
+	}
+	else {
+		var posts = parsePostModel(result.data);
+		response.status(200);
+		response.send(posts[0]);
 	}
 }

@@ -75,13 +75,17 @@ module.exports.deleteFriend = function(userID, friendID, callback) {
     database.runCypherQuery(query, null, callback);
 }
 
-module.exports.addFriend = function(userID, friendID, callback) {
-	var query = "match (me:User{id : '" + userID + "'}), (friend:User{id : '" + friendID + "'}) MERGE (me) - [r:FRIEND_REQUEST] -> (friend)";
+module.exports.addFriend = function(userID, friendID, day, callback) {
+	var query = "match (me:User{id : '" + userID + "'}), (friend:User{id : '" + friendID + "'}) MERGE (me) - [r:FRIEND_REQUEST] -> (friend) "
+				+ " merge (me) - [noti:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'add'}] -> (friend) "
+				+ "SET noti.date : '" + day + "'";
     database.runCypherQuery(query, null, callback);
 }
 
-module.exports.confirmFriendRequest = function(userID, friendID, callback) {
-	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r merge (me) - [ff:FRIEND] -> (friend) merge (me) <- [ff2:FRIEND] - (friend) ";
+module.exports.confirmFriendRequest = function(userID, friendID, day, callback) {
+	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r "
+				+ " merge (me) - [ff:FRIEND] -> (friend) merge (me) <- [ff2:FRIEND] - (friend) "
+				+ " merge (me) - [:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'confirm', date : '" + day + "'}] -> (friend) ";
     database.runCypherQuery(query, null, callback);
 }
 
