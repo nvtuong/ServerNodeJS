@@ -259,7 +259,7 @@ app.get('/', function(req, res){
 })
 
 app.listen(process.env.PORT || app.get('port'), function(){
-	console.log("Server is running at ", http.address().port);
+	console.log("Server is running at " + process.env.PORT);
 })
 
 
