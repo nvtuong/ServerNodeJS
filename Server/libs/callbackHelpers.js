@@ -372,27 +372,17 @@ module.exports.getUserNotificationCallback = function(response, err, result) {
 	}
 }
 
-module.exports.makeNotificationMyPostCallback = function(response, err, result) {
-	console.log("My  Post  Callback");
+module.exports.makeNotificationPostCallback = function(response, err, result) {
+	console.log("Notification Post Callback");
 	if(err || result.data[0] == null){
 		console.log(err);
 		responseBadRequest(response, err);
 	}
 	else{
+		console.log(result);
+		var notifications = parseNotification(result.data);
 		response.status(200);
-		response.send();
-	}
-}
-
-module.exports.makeNotificationFriendPostCallback = function(response, err, result) {
-	console.log("Friend Post  Callback");
-	if(err || result.data[0] == null){
-		console.log(err);
-		responseBadRequest(response, err);
-	}
-	else{
-		response.status(200);
-		response.send();
+		response.send(notifications);
 	}
 }
 

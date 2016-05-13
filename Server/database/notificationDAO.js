@@ -5,21 +5,17 @@ module.exports.getUserNotification = function(userID, callback) {
     database.runCypherQuery(query, null, callback);
 }
 
-module.exports.makeNotificationFriendPost = function(userID, Latitude, Longitude, distance, day, callback) {
+module.exports.makeNotificationPost = function(userID, Latitude, Longitude, distance, day, callback) {
 	var query = "match (u:User{id : '" + userID + "'}) - [:FRIEND] -> (uu : User) - [r:POST]-> (p:Post) "
 			+ "where 2000 * 6371 * asin(sqrt(haversin(radians(p.Latitude - " + Latitude + ")) + cos(radians(p.Latitude)) "
 			+ "* cos(radians(" + Latitude + ")) * haversin(radians(p.Longitude - " + Longitude + ")))) < " + distance 
 			+ " MERGE (p) - [noti:NOTIFICATION{name : uu.name, avatar : uu.avatar, content : 'friend'}] -> (u) set noti.date = '" + day + "' "
-			+ " return uu.name ";
-    database.runCypherQuery(query, null, callback);
-}
-
-module.exports.makeNotificationMyPost = function(userID, Latitude, Longitude, distance, day, callback) {
-	var query = "match (u:User{id : '" + userID + "'}) - [r:POST]-> (p:Post) "
+			+ " return noti.name, noti.avatar, noti.content, noti.date, p.id  UNION ALL "
+			+ "match (u:User{id : '" + userID + "'}) - [r:POST]-> (p:Post) "
 			+ "where 2000 * 6371 * asin(sqrt(haversin(radians(p.Latitude - " + Latitude + ")) + cos(radians(p.Latitude)) "
 			+ "* cos(radians(" + Latitude + ")) * haversin(radians(p.Longitude - " + Longitude + ")))) < " + distance 
 			+ " MERGE (p) - [noti:NOTIFICATION{name : u.name, avatar : u.avatar, content : 'mine'}] -> (u) set noti.date = '" + day + "' "
-			+ " return u.name ";
+			+ " return noti.name, noti.avatar, noti.content, noti.date, p.id";
     database.runCypherQuery(query, null, callback);
 }
 

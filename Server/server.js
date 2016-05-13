@@ -211,15 +211,9 @@ app.post('/api/getUserNotification', function(req, res) {
 	})
 })
 
-app.post('/api/makeNotificationMyPost', function(req, res) {
-	notificationDAO.makeNotificationMyPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
-		callbackHelpers.makeNotificationMyPostCallback(res, err, result);
-	})
-})
-
-app.post('/api/makeNotificationFriendPost', function(req, res) {
-	notificationDAO.makeNotificationFriendPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
-		callbackHelpers.makeNotificationFriendPostCallback(res, err, result);
+app.post('/api/makeNotificationPost', function(req, res) {
+	notificationDAO.makeNotificationPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
+		callbackHelpers.makeNotificationPostCallback(res, err, result);
 	})
 })
 
