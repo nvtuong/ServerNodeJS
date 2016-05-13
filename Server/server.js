@@ -264,8 +264,8 @@ app.get('/', function(req, res){
 	res.send('Hello World');
 })
 
-app.listen(app.get('port'), function(){
-	console.log("Server is running!");
+app.listen(process.env.PORT || app.get('port'), function(){
+	console.log("Server is running at ", http.address().port);
 })
 
 
