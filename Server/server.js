@@ -5,6 +5,7 @@ var userDAO = require('./database/userDAO.js');
 var postDAO = require('./database/postDAO.js');
 var commentDAO = require('./database/commentDAO.js');
 var notificationDAO = require('./database/notificationDAO.js');
+var messageHelper = require('./libs/messageHelper.js')
 var puid = require('./libs/lib.js');
 var callbackHelpers = require('./libs/callbackHelpers.js');
 var fs = require('fs');
@@ -231,6 +232,22 @@ app.post('/api/deleteNotification', function(req, res) {
 app.post('/api/getPostDetail', function(req, res) {
 	postDAO.getPostDetail(req.body.userID, req.body.dataID, function(err, result) {
 		callbackHelpers.getPostDetailCallback(res, err, result);
+	})
+})
+
+app.post('/api/sendMessage', function(req, res) {
+	console.log("Send Message!");
+	var regIDs = ["dd1qdOLzIuw:APA91bHb_QPNMM49-rAmJQCfILFYQ-huNFdOF26FxH5VJDATNOf-nTywAPoB3OemhTtCpzGf17y6vKhhXRBHgTFY81Jhj5gejUTnoiqErwvNSEGaBFot4R_SYUL1QNsGtrjRvyppprns"];
+	//var content = "Hello World! My name is Tuong";
+	console.log(req.body.message);
+	messageHelper.sendMessage(null, regIDs, req.body.message, function(err, result){
+		if(err){
+			res.status(404);
+		}
+		else {
+			res.status(200);
+		}
+		res.send();
 	})
 })
 
