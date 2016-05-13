@@ -330,8 +330,10 @@ module.exports.deleteFriendCallback = function(response, err, result) {
 
 module.exports.addFriendCallback = function(response, err, result) {
 	console.log("addFriendCallback");
-	if(err)
+	if(err){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
 		response.status(200);
 		response.send();
@@ -372,9 +374,10 @@ module.exports.getUserNotificationCallback = function(response, err, result) {
 
 module.exports.makeNotificationMyPostCallback = function(response, err, result) {
 	console.log("My  Post  Callback");
-	console.log(result);
-	if(err || result.data[0] == null)
+	if(err || result.data[0] == null){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else{
 		response.status(200);
 		response.send();
@@ -383,9 +386,10 @@ module.exports.makeNotificationMyPostCallback = function(response, err, result) 
 
 module.exports.makeNotificationFriendPostCallback = function(response, err, result) {
 	console.log("Friend Post  Callback");
-	console.log(result);
-	if(err || result.data[0] == null)
+	if(err || result.data[0] == null){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else{
 		response.status(200);
 		response.send();

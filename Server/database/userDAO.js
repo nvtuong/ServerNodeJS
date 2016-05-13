@@ -78,14 +78,15 @@ module.exports.deleteFriend = function(userID, friendID, callback) {
 module.exports.addFriend = function(userID, friendID, day, callback) {
 	var query = "match (me:User{id : '" + userID + "'}), (friend:User{id : '" + friendID + "'}) MERGE (me) - [r:FRIEND_REQUEST] -> (friend) "
 				+ " merge (me) - [noti:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'add'}] -> (friend) "
-				+ "SET noti.date : '" + day + "'";
+				+ "SET noti.date = '" + day + "'";
     database.runCypherQuery(query, null, callback);
 }
 
 module.exports.confirmFriendRequest = function(userID, friendID, day, callback) {
 	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r "
 				+ " merge (me) - [ff:FRIEND] -> (friend) merge (me) <- [ff2:FRIEND] - (friend) "
-				+ " merge (me) - [:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'confirm', date : '" + day + "'}] -> (friend) ";
+				+ " merge (me) - [noti:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'confirm'}] -> (friend)  "
+				+ " SET noti.date =  '" + day + "'";
     database.runCypherQuery(query, null, callback);
 }
 
