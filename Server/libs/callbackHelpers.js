@@ -380,9 +380,8 @@ module.exports.makeNotificationPostCallback = function(response, err, result) {
 	}
 	else{
 		console.log(result);
-		var notifications = parseNotification(result.data);
 		response.status(200);
-		response.send(notifications);
+		response.send();
 	}
 }
 
@@ -391,6 +390,7 @@ module.exports.deleteNotificationCallback = function(response, err, result) {
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else{
+		console.log("delete notification ok");
 		response.status(200);
 		response.send();
 	}
