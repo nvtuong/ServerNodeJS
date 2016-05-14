@@ -386,9 +386,10 @@ module.exports.makeNotificationPostCallback = function(response, err, result) {
 }
 
 module.exports.deleteNotificationCallback = function(response, err, result) {
-	console.log("deleteNotificationCallback");
-	if(err || result.data[0] == null)
+	if(err){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else{
 		console.log("delete notification ok");
 		response.status(200);
