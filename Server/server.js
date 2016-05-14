@@ -231,17 +231,31 @@ app.post('/api/getPostDetail', function(req, res) {
 
 app.post('/api/sendMessage', function(req, res) {
 	console.log("Send Message!");
-	var regIDs = ["dd1qdOLzIuw:APA91bHb_QPNMM49-rAmJQCfILFYQ-huNFdOF26FxH5VJDATNOf-nTywAPoB3OemhTtCpzGf17y6vKhhXRBHgTFY81Jhj5gejUTnoiqErwvNSEGaBFot4R_SYUL1QNsGtrjRvyppprns"];
-	//var content = "Hello World! My name is Tuong";
-	console.log(req.body.message);
-	messageHelper.sendMessage(null, regIDs, req.body.message, function(err, result){
-		if(err){
+	var targetUserID = req.body.targetID;
+	// save message...
+	var message = req.body.message;
+
+	userDAO.getUserRegId(targetUserID, function(err, result){
+		if(err) {
 			res.status(404);
+			res.send();
 		}
 		else {
-			res.status(200);
+			var regIDs = [result.data[0]];
+			console.log(req.body.message);
+			console.log(regIDs);
+			messageHelper.sendMessage(null, regIDs, message, function(err, result){
+				callbackHelpers.sendMessageHelperCallback(res, err, result);
+			});	
 		}
-		res.send();
+	});
+	
+})
+
+app.post('/api/updateRegistrationID', function(req, res) {
+	console.log("updateRegistrationID");
+	userDAO.updateRegistrationID(req.body.userID, req.body.regID, function(err, result){
+		callbackHelpers.updateRegistrationIDCallback(res, err, result);
 	})
 })
 

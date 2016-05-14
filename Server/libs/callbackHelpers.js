@@ -1,3 +1,4 @@
+var messageHelper = require('../libs/messageHelper.js');
 
 function responseBadRequest(response, err) {
 	response.status(404);
@@ -183,6 +184,7 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		responseBadRequest(response, err);
 	}
 	else {
+
 		console.log(result);
 		var comments = parseONECommentModel(result);
 		response.status(200);
@@ -335,6 +337,9 @@ module.exports.addFriendCallback = function(response, err, result) {
 		responseBadRequest(response, err);
 	}
 	else {
+		var regID = result.data[0];
+		var content = "add";
+		messageHelpers.pushNotification(content, regIDs)
 		response.status(200);
 		response.send();
 	}
@@ -409,3 +414,24 @@ module.exports.getPostDetailCallback = function(response, err, result) {
 		response.send(posts[0]);
 	}
 }
+
+module.exports.updateRegistrationIDCallback = function(response, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
+
+module.exports.sendMessageHelperCallback = function(response, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
+

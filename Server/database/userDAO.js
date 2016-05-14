@@ -7,6 +7,11 @@ module.exports.getUserInfor = function(userID, callback) {
 	database.runCypherQuery(query, null, callback);
 }
 
+module.exports.getUserRegId = function(userID, callback) {
+	var query = "match (user:User{id: '" + userID + "'}) return user.regID";
+	database.runCypherQuery(query, null, callback);
+}
+
 module.exports.getAllFriends = function(userID, callback) {
 	var query = "match (me:User{id : '" + userID + "'}) - [:FRIEND] -> (u:User) - [r:FRIEND] -> (ff:User) "
                 + "optional match (me)- [m:FRIEND]->(ff) return u.id, u.name, u.avatar, "
@@ -78,7 +83,7 @@ module.exports.deleteFriend = function(userID, friendID, callback) {
 module.exports.addFriend = function(userID, friendID, day, callback) {
 	var query = "match (me:User{id : '" + userID + "'}), (friend:User{id : '" + friendID + "'}) MERGE (me) - [r:FRIEND_REQUEST] -> (friend) "
 				+ " merge (me) - [noti:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'add'}] -> (friend) "
-				+ "SET noti.date = '" + day + "'";
+				+ "SET noti.date = '" + day + "' return friend.regID";
     database.runCypherQuery(query, null, callback);
 }
 
@@ -89,4 +94,10 @@ module.exports.confirmFriendRequest = function(userID, friendID, day, callback) 
 				+ " SET noti.date =  '" + day + "'";
     database.runCypherQuery(query, null, callback);
 }
+
+module.exports.updateRegistrationID = function(userID, regID, callback) {
+	var query = "match (me:User{id: '" + userID + "'}) set me.regID = '" + regID + "'";
+	database.runCypherQuery(query, null, callback);
+}
+
 
