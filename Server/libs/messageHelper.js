@@ -11,7 +11,7 @@ module.exports.sendMessage = function(user, regIDs, content, callback) {
 	})
 }
 
-module.exports.pushNotification = function(content, regIDs) {
+module.exports.pushNotification = function(content, regIDs, callback) {
 	var message = new gcm.Message();
 	message.addData('message', content);
 	var sender = new gcm.Sender(apiKey);

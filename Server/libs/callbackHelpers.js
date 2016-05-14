@@ -1,4 +1,5 @@
 var messageHelper = require('../libs/messageHelper.js');
+var postDAO = require('../database/postDAO.js')
 
 function responseBadRequest(response, err) {
 	response.status(404);
@@ -184,11 +185,21 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		responseBadRequest(response, err);
 	}
 	else {
-
 		console.log(result);
 		var comments = parseONECommentModel(result);
-		response.status(200);
-		response.send(comments);
+		var content = "comment";
+		var regID = [result.data[0][6]];
+		messageHelper.pushNotification(content, regID, function (err ,result){
+			if(err){
+				console.log(err);
+				responseBadRequest(response, err);
+			}
+			else{
+				response.status(200);
+				response.send(comments);
+			}
+		});
+		
 	}
 }
 
@@ -279,6 +290,16 @@ module.exports.createPostCallBack = function(response, err, result) {
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
+		var userID = result.data[0][15];
+		postDAO.getRegIDofFriend(userID, function(err, result){
+			if (result){
+				var content = "home";
+				var regID  = result.data[0];
+				messageHelper.pushNotification(content, regID, function (err ,result){
+					
+				});
+			}
+		});
 		var post = parsePostModel(result.data)
 		response.status(200);
 		response.send(post[0]);
@@ -337,21 +358,42 @@ module.exports.addFriendCallback = function(response, err, result) {
 		responseBadRequest(response, err);
 	}
 	else {
-		var regID = result.data[0];
+		var regID = result.data;		
+		console.log(regID)
 		var content = "add";
-		messageHelpers.pushNotification(content, regIDs)
-		response.status(200);
-		response.send();
+		messageHelper.pushNotification(content, regID, function (err ,result){
+			if(err){
+				console.log(err);
+				responseBadRequest(response, err);
+			}
+			else{
+				response.status(200);
+				response.send();
+			}
+		});
 	}
 }
 
 module.exports.confirmFriendRequestCallback = function(response, err, result) {
 	console.log("confirmFriendRequestCallback");
-	if(err)
+	if(err){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
-		response.status(200);
-		response.send();
+		var regID = result.data;		
+		console.log(regID)
+		var content = "confirm";
+		messageHelper.pushNotification(content, regID, function (err ,result){
+			if(err){
+				console.log(err);
+				responseBadRequest(response, err);
+			}
+			else{
+				response.status(200);
+				response.send();
+			}
+		});
 	}
 }
 

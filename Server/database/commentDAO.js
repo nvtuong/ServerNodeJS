@@ -16,6 +16,6 @@ module.exports.createNewCommentOfPost = function(postID, userID, content, day, c
 				+ " merge (p) - [noti:NOTIFICATION{name : me.name, avatar : me.avatar, content : 'comment'}] -> (u) SET noti.date = '" + day + "'"
 				+ " create (p) - [h:HAS_COMMENT] -> " 
 				+ " (c:Comment{id : '" + postID + cid + "', content : '" + content + "', day : '" + day + "', userID : '" + userID + "'}) "
-                + " return c.id, c.content, c.day, me.id, me.name, me.avatar";
+                + " return c.id, c.content, c.day, me.id, me.name, me.avatar, u.regID";
     database.runCypherQuery(query, null, callback);
 }

@@ -46,8 +46,13 @@ module.exports.createPost = function(postID, userID, content, date, Latitude, Lo
 		+ "(p:Post{id :'" + postID + "', content : '" + content + "', listImage: '"+ listImages + "', tag :" + tag + ", "
 		+" feeling : '" + feeling + "', Latitude : " +  Latitude + ", Longitude : " + Longitude + ", day :'" + date +"'})"
    		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, p.tag";	
+		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, p.tag, u.id";	
    	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.getRegIDofFriend = function(userID, callback) {
+	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND] - > (f:User) return collect (f.regID)";
+	database.runCypherQuery(query, null, callback);
 }
 
 module.exports.SearchPost = function(userID, params, callback) {

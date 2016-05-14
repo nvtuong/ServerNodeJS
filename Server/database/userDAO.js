@@ -91,7 +91,7 @@ module.exports.confirmFriendRequest = function(userID, friendID, day, callback) 
 	var query = "match (me:User{id : '" + userID + "'}) - [r:FRIEND_REQUEST] - (friend:User{id : '" + friendID + "'}) delete r "
 				+ " merge (me) - [ff:FRIEND] -> (friend) merge (me) <- [ff2:FRIEND] - (friend) "
 				+ " merge (me) - [noti:NOTIFICATION {name : me.name, avatar : me.avatar, content : 'confirm'}] -> (friend)  "
-				+ " SET noti.date =  '" + day + "'";
+				+ " SET noti.date =  '" + day + "' return friend.regID";
     database.runCypherQuery(query, null, callback);
 }
 
