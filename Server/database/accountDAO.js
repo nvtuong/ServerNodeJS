@@ -27,7 +27,7 @@ module.exports.changePassword = function(id, password, callback) {
 // register new account with name, email, password
 // return User model
 module.exports.registerAccount = function(name, email, password, defaultLatitude, defaultLongitude, callback) {
-	var emailExist = checkExistEmail(email, function(err, result){
+	var emailExist = checkExistEmail(email, function(err, result) {
 		if(err || result.data[0] > 0) {
 			console.log(err);
 			var error = new Error("Email exists!");

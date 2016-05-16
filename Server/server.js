@@ -26,6 +26,7 @@ global.appRoot = __dirname;
 
 app.post('/api/register', accountService.registerService);
 app.post('/api/login', accountService.loginService);
+app.get('/api/verifyAccount/:id', accountService.verifyAccountService);
 
 /*-----------------------------END----------------------------------------------*/
 
@@ -113,6 +114,11 @@ app.get('/', function(req, res){
 	console.log(req.url);
 	res.type('text/plain');
 	res.send('Hello World');
+})
+
+app.get('/testEmail', function(req, res) {
+	console.log("test send email");
+	puid.sendEmail("nvtuong175@gmail.com", "Verify Account", "Please verify your account!");
 })
 
 app.listen(process.env.PORT || app.get('port'), function(){

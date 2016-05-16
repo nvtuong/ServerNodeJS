@@ -13,6 +13,8 @@
     "express": "^4.13.4",
     "node-gcm": "^0.14.0",
     "node-neo4j": "^2.0.3",
+    "nodemailer": "^2.4.1",
+    "nodemailer-smtp-transport": "^2.5.0",
     "puid": "^1.0.5",
     "request": "^2.69.0"
   }
