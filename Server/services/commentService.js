@@ -12,3 +12,9 @@ module.exports.createNewCommentOfPostService = function(req, res) {
 		commentCallback.createNewCommentOfPostCallBack(res, err, result);
 	});
 };
+
+module.exports.getLastCommentOfPostService = function(req, res) {
+	commentDAO.getLastCommentOfPost(req.body.postID, function(err, result){
+		commentCallback.getLastCommentOfPostCallback(res, err, result);
+	});
+};

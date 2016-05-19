@@ -9,7 +9,8 @@ module.exports.getAllPostOfFriends = function(userID, callback) {
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag "
+			+ "ORDER BY p.day DESC limit 20";
     database.runCypherQuery(query, null, callback);
 }
 
@@ -22,7 +23,8 @@ module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag";
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag "
+			+ " ORDER BY p.day DESC limit 20";
    	database.runCypherQuery(query, null, callback);
 }
 
@@ -63,7 +65,8 @@ module.exports.SearchPost = function(userID, params, callback) {
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag LIMIT 10";
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag "
+			+ "ORDER BY p.day LIMIT 10";
     database.runCypherQuery(query, null, callback);
 }
 

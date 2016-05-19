@@ -1,7 +1,7 @@
 var database = require('./database.js');
 
 module.exports.getAllMessages = function(userID, callback) {
-	var query = "match (u:User{id: '"+ userID +"'}) - [:MESSAGE] -> (p:Message) <-[:MESSAGE]- (u2:User) where (u) <> (u2) return u2.id, u2.name, u2.avatar, p.date, p.message";
+	var query = "match (u:User{id: '"+ userID +"'}) - [:MESSAGE] -> (p:Message) <-[:MESSAGE]- (u2:User) where (u) <> (u2) return u2.id, u2.name, u2.avatar, p.date, p.message ORDER BY p.date DESC";
 	database.runCypherQuery(query, null, callback);
 }
 

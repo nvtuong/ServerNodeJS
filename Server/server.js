@@ -68,6 +68,7 @@ app.post('/api/getPostDetail', postService.getPostDetailService);
 
 app.post('/api/getAllCommentsOfPost', commentService.getAllCommentsOfPostService);
 app.post('/api/createNewCommentOfPost', commentService.createNewCommentOfPostService);
+app.post('/api/getLastCommentOfPost', commentService.getLastCommentOfPostService);
 
 /*-----------------------------------END----------------------------------------------*/
 

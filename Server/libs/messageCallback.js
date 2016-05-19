@@ -78,7 +78,8 @@ module.exports.sendMessageToUserCallback = function(response, senderID, targetID
 			}
 			else {
 				var regID = result.data;
-				messageHelper.pushNotificationWithParam("message", senderID, regID, function(err, result){
+				var content = "message"
+				messageHelper.pushNotificationWithParam(content, senderID, regID, function(err, result){
 					if(err) {
 						responseBadRequest(response, err);
 					}
@@ -86,9 +87,8 @@ module.exports.sendMessageToUserCallback = function(response, senderID, targetID
 						response.status(200);
 						response.send();
 					}
-				})
+				});
 			}
-
-		})
+		});
 	}
 }

@@ -91,7 +91,8 @@ module.exports.createPostCallBack = function(response, err, result) {
 			if (result){
 				var content = "home";
 				var regID  = result.data[0];
-				messageHelper.pushNotification(content, regID, function (err ,result){
+				var param = userID;
+				messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
 					
 				});
 			}

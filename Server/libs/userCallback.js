@@ -156,10 +156,11 @@ module.exports.addFriendCallback = function(response, err, result) {
 		responseBadRequest(response, err);
 	}
 	else {
-		var regID = result.data;		
+		var regID = [result.data[0][0]];
+		var param = result.data[0][1];		
 		console.log(regID)
 		var content = "add";
-		messageHelper.pushNotification(content, regID, function (err ,result){
+		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);
@@ -179,10 +180,11 @@ module.exports.confirmFriendRequestCallback = function(response, err, result) {
 		responseBadRequest(response, err);
 	}
 	else {
-		var regID = result.data;		
+		var regID = [result.data[0][0]];
+		var param = result.data[0][1];		
 		console.log(regID)
 		var content = "confirm";
-		messageHelper.pushNotification(content, regID, function (err ,result){
+		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);

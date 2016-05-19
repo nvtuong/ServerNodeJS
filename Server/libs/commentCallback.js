@@ -46,6 +46,7 @@ function parseONECommentModel(result) {
 }
 
 module.exports.createNewCommentOfPostCallBack = function(response, err, result) {
+	console.log("createNewCommentOfPostCallBack");
 	if(err){
 		console.log(err);
 		responseBadRequest(response, err);
@@ -55,7 +56,8 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		var comments = parseONECommentModel(result);
 		var content = "comment";
 		var regID = [result.data[0][6]];
-		messageHelper.pushNotification(content, regID, function (err ,result){
+		var param = result.data[0][7];
+		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);
@@ -66,5 +68,16 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 			}
 		});
 		
+	}
+}
+
+module.exports.getLastCommentOfPostCallback = function(response, err, result) {
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else {
+		console.log(result);
+		var comments = parseONECommentModel(result);
+		response.status(200);
+		response.send(comments);
 	}
 }
