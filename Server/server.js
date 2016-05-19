@@ -101,6 +101,10 @@ app.post('/api/uploadImage', function(req, res) {
 
 app.post('/api/sendMessage', messageService.sendMessageService);
 
+app.post('/api/getAllMessages', messageService.getAllMessages);
+app.post('/api/loadMessageOfUser', messageService.getMessageOfUser);
+app.post('/api/sendMessageToUser', messageService.sendMessageToUser);
+
 
 
 /*------------------------------END-------------------------------*/

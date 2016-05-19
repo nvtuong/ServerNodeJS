@@ -1,5 +1,6 @@
 var messageHelper = require('../libs/messageHelper.js');
 var messageCallback = require('../libs/messageCallback.js');
+var messageDAO = require('../database/messageDAO.js');
 
 module.exports.sendMessageService = function(req, res) {
 	console.log("Send Message!");
@@ -18,5 +19,34 @@ module.exports.sendMessageService = function(req, res) {
 				messageCallback.sendMessageHelperCallback(res, err, result);
 			});	
 		}
+	});
+}
+
+module.exports.getAllMessages = function(req, res) {
+	console.log("get All Messages");
+	var fromUserID = req.body.userID;
+	messageDAO.getAllMessages(fromUserID, function(err, result) {
+		messageCallback.getAllMessagesCallback(res, err, result);
+	});
+}
+
+module.exports.getMessageOfUser = function(req, res) {
+	console.log("load Message");
+	var userID = req.body.userID;
+	var targetID = req.body.targetUserID;
+	var skip = req.body.skip;
+	messageDAO.getMessageOfUser(userID, targetUserID, skip, function(err, result) {
+		messageCallback.getMessageOfUserCallback(res, err, result);
+	})
+}
+
+module.exports.sendMessageToUser = function(req, res) {
+	console.log("send Message to user");
+	var senderID = req.body.fromUserID;
+	var targetID = req.body.toUserID;
+	var message = req.body.message;
+	var date = req.body.date;
+	messageDAO.sendMessageToUser(senderID, targetID, message, data, function(err, result) {
+		messageCallback.sendMessageToUserCallback(res, err, targetID, message, result);
 	});
 }
