@@ -32,7 +32,7 @@ app.get('/api/verifyAccount/:id', accountService.verifyAccountService);
 
 
 /*------------------------------API for User --------------------------------*/
-app.post('/api/getUserInfor', userService.getUserInforService);
+//app.post('/api/getUserInfor', userService.getUserInforService);
 app.post('/api/getAllFriends', userService.getAllFriendsService);
 app.post('/api/getSuggestFriends', userService.getSuggestFriendsService);
 app.post('/api/updateProfile', userService.updateProfileService);
@@ -103,6 +103,7 @@ app.post('/api/sendMessage', messageService.sendMessageService);
 
 app.post('/api/getAllMessages', messageService.getAllMessages);
 app.post('/api/loadMessageOfUser', messageService.getMessageOfUser);
+app.post('/api/loadOneMessageOfUser', messageService.loadOneMessageOfUser);
 app.post('/api/sendMessageToUser', messageService.sendMessageToUser);
 
 

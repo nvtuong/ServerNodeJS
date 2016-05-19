@@ -2,10 +2,12 @@ var database = require('./database.js');
 
 
 // return User model
+
 module.exports.getUserInfor = function(userID, callback) {
-	var query = "match (user:User{id : '" + userID + "'}) return user";
+	var query = "match (user:User{id : '" + userID + "'}) return user.name, user.avatar, user.regID";
 	database.runCypherQuery(query, null, callback);
 }
+
 
 module.exports.getUserRegId = function(userID, callback) {
 	var query = "match (user:User{id: '" + userID + "'}) return user.regID";

@@ -30,12 +30,13 @@ module.exports.getAllMessages = function(req, res) {
 	});
 }
 
+
 module.exports.getMessageOfUser = function(req, res) {
 	console.log("load Message");
 	var userID = req.body.userID;
 	var targetID = req.body.targetUserID;
 	var skip = req.body.skip;
-	messageDAO.getMessageOfUser(userID, targetUserID, skip, function(err, result) {
+	messageDAO.getMessageOfUser(userID, targetID, skip, function(err, result) {
 		messageCallback.getMessageOfUserCallback(res, err, result);
 	})
 }
@@ -46,7 +47,16 @@ module.exports.sendMessageToUser = function(req, res) {
 	var targetID = req.body.toUserID;
 	var message = req.body.message;
 	var date = req.body.date;
-	messageDAO.sendMessageToUser(senderID, targetID, message, data, function(err, result) {
-		messageCallback.sendMessageToUserCallback(res, err, targetID, message, result);
+	messageDAO.sendMessageToUser(senderID, targetID, message, date, function(err, result) {
+		messageCallback.sendMessageToUserCallback(res, senderID, targetID, err, result);
 	});
+}
+
+module.exports.loadOneMessageOfUser = function(req, res) {
+	console.log("load one message");
+	var userID = req.body.userID;
+	var targetID = req.body.targetUserID;
+	messageDAO.loadOneMessageOfUser(userID, targetID, function(err, result) {
+		messageCallback.loadOneMessageOfUserCallback(res, err, result);
+	})
 }

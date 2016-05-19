@@ -21,12 +21,12 @@ function parseMessageModel(data) {
 	var messages = [];
 	for (var i = 0; i < data.length; i ++) {
 		var temp = data[i];
-		var message;
-		message.senderID = temp[0];
-		message.senderName = temp[1];
-		message.senderAvatar = temp[2];
-		message.date = temp[3];
-		message.message = temp[4];
+		var message = {};
+		message["senderID"] = temp[0];
+		message["senderName"] = temp[1];
+		message["senderAvatar"] = temp[2];
+		message["date"] = temp[3];
+		message["message"] = temp[4];
 		messages.push(message);
 	}
 	return messages;
@@ -50,27 +50,45 @@ module.exports.getMessageOfUserCallback = function(response, err, result) {
 	else {
 		var messages = parseMessageModel(result.data);
 		response.status(200);
-		response.send(message);
+		response.send(messages);
 	}
 }
 
-module.exports.sendMessageToUserCallback = function(response, err, targetID, message, result) {
+module.exports.loadOneMessageOfUserCallback = function(response, err, result){
 	console.log(result);
 	if(err)
 		responseBadRequest(response, err);
 	else {
-		userDAO.getUserRegId(targetID, function(err, result){
-			if(err)
-				responseBadRequest(response, err);
-			else {
-				var content = "message";
-				var regID = result.data;	
-				messageHelper.pushNotification(content, regID, function(err, result) {
+		var messages = parseMessageModel(result.data);
+		response.status(200);
+		response.send(messages[0]);
+	}
+}
 
-				})
-				response.status(200);
-				response.send();
+
+
+module.exports.sendMessageToUserCallback = function(response, senderID, targetID, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		userDAO.getUserRegId(targetID, function(err, result) {
+			if(err) {
+				responseBadRequest(response, err);
 			}
+			else {
+				var regID = result.data;
+				messageHelper.pushNotificationWithParam("message", senderID, regID, function(err, result){
+					if(err) {
+						responseBadRequest(response, err);
+					}
+					else {
+						response.status(200);
+						response.send();
+					}
+				})
+			}
+
 		})
 	}
 }
