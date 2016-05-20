@@ -21,3 +21,13 @@ module.exports.registerCallback = function(response, err, result) {
 		response.send(result.data[0]);
 	}
 }
+
+module.exports.changePasswordCallback = function(response, err, result){
+	console.log(result);
+	if(err || result.data[0] == null)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}

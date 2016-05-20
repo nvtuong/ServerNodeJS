@@ -31,3 +31,10 @@ module.exports.verifyAccountService = function(req, res) {
 	console.log(req.params.id);
 	// update database!
 }
+
+module.exports.changePasswordService = function(req, res){
+	console.log("changePassword");
+	accountDAO.changePassword(req.body.userID, req.body.oldPassword, req.body.newPassword, function(err, result){
+		accountCallback.changePasswordCallback(res, err, result);
+	});
+};

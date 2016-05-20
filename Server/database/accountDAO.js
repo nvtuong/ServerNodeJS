@@ -19,8 +19,10 @@ module.exports.loginWithEmailAndPassword = function(email, password, callback){
 
 
 // parameter: id of account and new password, retrun true if success
-module.exports.changePassword = function(id, password, callback) {
-
+module.exports.changePassword = function(id, oldPassword, newPassword, callback) {
+	var query = "match (u:User{id : '" + id + "'}) <- [:USER_ACCOUNT] - (a:Account{password : '" + oldPassword + "'}) "
+				+ "set a.password = '" + newPassword + "' return u.id";
+	database.runCypherQuery(query, null, callback);
 }
 
 

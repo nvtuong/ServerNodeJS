@@ -27,6 +27,7 @@ global.appRoot = __dirname;
 app.post('/api/register', accountService.registerService);
 app.post('/api/login', accountService.loginService);
 app.get('/api/verifyAccount/:id', accountService.verifyAccountService);
+app.post('/api/changePassword', accountService.changePasswordService);
 
 /*-----------------------------END----------------------------------------------*/
 
