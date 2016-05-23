@@ -100,6 +100,34 @@ app.post('/api/uploadImage', function(req, res) {
 	}
 })
 
+app.post('/api/uploadImages', function(req, res) {
+	var fileNames = []
+	if(req.body.binary) {
+		var binary = req.body.binary;
+		console.log(binary.length);
+		var done = 0;
+		var isSent = false;
+		for (var i = 0; i < binary.length; i++) {
+			var fileName = req.body.postID + req.body.startIndex + i + '.jpg';
+			fileNames.push(fileName);
+			var path = __dirname + '/public/uploads/' + fileName;
+			writingHelper.writeImage(path, binary[i], function(err) {
+				if(err && !isSent) {
+					isSent = true;
+					res.status(404);
+					res.send(err);
+				}
+				else if(!err)
+					++done;
+				if(done === binary.length) {
+					res.status(200);
+					res.send(fileNames);
+				}
+			})
+		}
+	}
+})
+
 
 app.post('/api/sendMessage', messageService.sendMessageService);
 
