@@ -45,6 +45,7 @@ app.post('/api/deleteFriend', userService.deleteFriendService);
 app.post('/api/addFriend', userService.addFriendService);
 app.post('/api/confirmFriendRequest', userService.confirmFriendRequestService);
 app.post('/api/updateRegistrationID', userService.updateRegistrationIDService);
+app.post('/api/updateDefaultLocation', userService.updateDefaultLocationService);
 
 /*----------------------------------END----------------------------------------------*/
 

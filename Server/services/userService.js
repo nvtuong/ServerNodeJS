@@ -96,3 +96,10 @@ module.exports.updateRegistrationIDService = function(req, res) {
 	});
 };
 
+module.exports.updateDefaultLocationService = function(req, res) {
+	console.log("updateDefaultLocationService");
+	userDAO.updateDefaultLocation(req.body.userID, req.body.defaultLatitude, req.body.defaultLongitude, function(err, result){
+		userCallback.updateDefaultLocationCallback(res, err, result);
+	});
+};
+

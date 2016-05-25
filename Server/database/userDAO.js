@@ -102,4 +102,7 @@ module.exports.updateRegistrationID = function(userID, regID, callback) {
 	database.runCypherQuery(query, null, callback);
 }
 
-
+module.exports.updateDefaultLocation = function(userID, defaultLatitude, defaultLongitude, callback) {
+	var query = "match (u:User{id: '" + userID + "'}) set u.defaultLatitude = " + defaultLatitude + ", u.defaultLongitude = " + defaultLongitude;
+	database.runCypherQuery(query, null, callback);
+}

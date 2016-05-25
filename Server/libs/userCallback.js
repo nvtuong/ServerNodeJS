@@ -206,3 +206,13 @@ module.exports.updateRegistrationIDCallback = function(response, err, result) {
 		response.send();
 	}
 }
+
+module.exports.updateDefaultLocationCallback = function(response, err, result) {
+	console.log(result);
+	if(err)
+		responseBadRequest(response, err);
+	else {
+		response.status(200);
+		response.send();
+	}
+}
