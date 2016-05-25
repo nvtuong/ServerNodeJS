@@ -64,7 +64,7 @@ module.exports.SearchPost = function(userID, params, callback) {
 			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
-			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
+			+ "return distinct p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
 			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, p.tag "
 			+ "ORDER BY p.day LIMIT 10";
     database.runCypherQuery(query, null, callback);
