@@ -20,10 +20,11 @@ module.exports.sendMessage = function(user, regIDs, content, callback) {
 // 	})
 // }
 
-module.exports.pushNotificationWithParam = function(content, param, regIDs, callback) {
+module.exports.pushNotificationWithParam = function(content, param, regIDs, targetID, callback) {
 	var message = new gcm.Message();
 	message.addData('message', content);
 	message.addData('param', param);
+	message.addData('targetID', targetID);
 	var sender = new gcm.Sender(apiKey);
 	sender.send(message, {registrationTokens: regIDs}, function(err, result){
 		callback(err, result);

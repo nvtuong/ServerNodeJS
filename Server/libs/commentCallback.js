@@ -57,7 +57,7 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		var content = "comment";
 		var regID = [result.data[0][6]];
 		var param = result.data[0][7];
-		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
+		messageHelper.pushNotificationWithParam(content, param, regID, 'null', function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);

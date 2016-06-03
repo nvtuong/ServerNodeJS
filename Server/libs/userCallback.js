@@ -149,7 +149,7 @@ module.exports.deleteFriendCallback = function(response, err, result) {
 	}
 }
 
-module.exports.addFriendCallback = function(response, err, result) {
+module.exports.addFriendCallback = function(response, err, result, targetID) {
 	console.log("addFriendCallback");
 	if(err){
 		console.log(err);
@@ -160,7 +160,7 @@ module.exports.addFriendCallback = function(response, err, result) {
 		var param = result.data[0][1];		
 		console.log(regID)
 		var content = "add";
-		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
+		messageHelper.pushNotificationWithParam(content, param, regID, targetID, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);
@@ -173,7 +173,7 @@ module.exports.addFriendCallback = function(response, err, result) {
 	}
 }
 
-module.exports.confirmFriendRequestCallback = function(response, err, result) {
+module.exports.confirmFriendRequestCallback = function(response, err, result, targetID) {
 	console.log("confirmFriendRequestCallback");
 	if(err){
 		console.log(err);
@@ -184,7 +184,7 @@ module.exports.confirmFriendRequestCallback = function(response, err, result) {
 		var param = result.data[0][1];		
 		console.log(regID)
 		var content = "confirm";
-		messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
+		messageHelper.pushNotificationWithParam(content, param, regID, targetID, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);

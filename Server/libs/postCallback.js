@@ -86,17 +86,19 @@ module.exports.createPostCallBack = function(response, err, result) {
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
+		/*
 		var userID = result.data[0][15];
 		postDAO.getRegIDofFriend(userID, function(err, result){
 			if (result){
 				var content = "home";
 				var regID  = result.data[0];
 				var param = userID;
-				messageHelper.pushNotificationWithParam(content, param, regID, function (err ,result){
+				messageHelper.pushNotificationWithParam(content, param, regID, 'null', function (err ,result){
 					
 				});
 			}
 		});
+		*/
 		var post = parsePostModel(result.data)
 		response.status(200);
 		response.send(post[0]);

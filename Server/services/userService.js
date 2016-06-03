@@ -78,14 +78,14 @@ module.exports.deleteFriendService = function(req, res) {
 module.exports.addFriendService = function(req, res) {
 	console.log("addFriend");
 	userDAO.addFriend(req.body.userID, req.body.friendID, req.body.day, function(err, result) {
-		userCallback.addFriendCallback(res, err, result);
+		userCallback.addFriendCallback(res, err, result, req.body.friendID);
 	});
 };
 
 module.exports.confirmFriendRequestService = function(req, res) {
 	console.log("confirmFriendRequest");
 	userDAO.confirmFriendRequest(req.body.userID, req.body.friendID, req.body.day, function(err, result) {
-		userCallback.confirmFriendRequestCallback(res, err, result);
+		userCallback.confirmFriendRequestCallback(res, err, result, req.body.friendID);
 	});
 };
 

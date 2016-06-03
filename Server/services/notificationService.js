@@ -8,7 +8,9 @@ module.exports.getUserNotificationService = function(req, res) {
 };
 
 module.exports.makeNotificationPostService = function(req, res) {
-	notificationDAO.makeNotificationPost(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, req.body.day, function(err, result) {
+	notificationDAO.makeNotificationPost(req.body.userID, req.body.Latitude, req.body.Longitude,
+	req.body.LatitudeUp, req.body.LatitudeDown, req.body.LongitudeRight, req.body.LongitudeLeft,
+	req.body.day, function(err, result) {
 		notificationCallback.makeNotificationPostCallback(res, err, result);
 	});
 };

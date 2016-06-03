@@ -79,7 +79,7 @@ module.exports.sendMessageToUserCallback = function(response, senderID, targetID
 			else {
 				var regID = result.data;
 				var content = "message"
-				messageHelper.pushNotificationWithParam(content, senderID, regID, function(err, result){
+				messageHelper.pushNotificationWithParam(content, senderID, regID, targetID, function(err, result){
 					if(err) {
 						responseBadRequest(response, err);
 					}

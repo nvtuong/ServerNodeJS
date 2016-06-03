@@ -47,7 +47,9 @@ module.exports.SearchPostService = function(req, res) {
 };
 
 module.exports.SearchPostByDistanceService = function(req,res) {
-	postDAO.SearchPostByDistance(req.body.userID, req.body.Latitude, req.body.Longitude, req.body.distance, function(err, result) {
+	postDAO.SearchPostByDistance(req.body.userID, req.body.Latitude, req.body.Longitude, 
+		req.body.LatitudeUp, req.body.LatitudeDown, req.body.LongitudeRight, req.body.LongitudeLeft,
+		function(err, result) {
 		postCallback.SearchPostByDistanceCallback(res, err, result);
 	});
 };
