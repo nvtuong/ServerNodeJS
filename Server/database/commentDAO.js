@@ -16,12 +16,13 @@ module.exports.createNewCommentOfPost = function(postID, userID, content, day, c
 				+ " merge (p) - [noti:NOTIFICATION{name : me.name, avatar : me.avatar, content : 'comment'}] -> (u) SET noti.date = '" + day + "'"
 				+ " create (p) - [h:HAS_COMMENT] -> " 
 				+ " (c:Comment{id : '" + postID + cid + "', content : '" + content + "', day : '" + day + "', userID : '" + userID + "'}) "
-                + " return c.id, c.content, c.day, me.id, me.name, me.avatar, u.regID, p.id";
+                + " with c, me, u, p match (u) <- [fff:FRIEND] - (u5)"
+                + " return c.id, c.content, c.day, me.id, me.name, me.avatar, u.regID, p.id, collect(u5.id), collect(distinct u5.regID), u.id";
     database.runCypherQuery(query, null, callback);
 }
 
 module.exports.getLastCommentOfPost = function(postID, callback) {
 	var query = "match (p:Post{id: '" + postID + "'}) - [HAS_COMMENT] -> (c:Comment), (u:User{id : c.userID}) "
-                        + "return c.id, c.content, c.day, u.id, u.name, u.avatar ORDER BY c.day ASC LIMIT 1";
+                        + "return c.id, c.content, c.day, u.id, u.name, u.avatar ORDER BY c.day DESC LIMIT 1";
     database.runCypherQuery(query, null, callback);
 }

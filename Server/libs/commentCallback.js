@@ -55,9 +55,25 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 		console.log(result);
 		var comments = parseONECommentModel(result);
 		var content = "comment";
-		var regID = [result.data[0][6]];
 		var param = result.data[0][7];
-		messageHelper.pushNotificationWithParam(content, param, regID, 'null', function (err ,result){
+
+		var listID = result.data[0][8];
+		var has = false;
+		var listRegID = result.data[0][9];
+		for (var i = 0; i < listRegID.length; ++i){
+			if (listRegID[i] == result.data[0][6]) {
+				has = true;
+			};
+		}
+		if (has == false) {
+			listRegID.push(result.data[0][6]);
+		};
+
+		var strIDs = result.data[0][10];
+		for (var i = 0; i < listID.length; i++) 
+			strIDs += listID[i] + " ";
+
+		messageHelper.pushNotificationWithParam(content, param, listRegID, strIDs, function (err ,result){
 			if(err){
 				console.log(err);
 				responseBadRequest(response, err);

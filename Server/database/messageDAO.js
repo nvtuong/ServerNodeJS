@@ -13,7 +13,9 @@ module.exports.getMessageOfUser = function(userID, targetUserID, skip, callback)
 }
 
 module.exports.sendMessageToUser = function(senderID, targetID, message, date, callback) {
-	var query = "match (u1:User{id: '"+senderID+"'}), (u2:User{id: '"+targetID+"'}) optional match (u1) - [r1:MESSAGE] - > (oldM:Message) < - [r2:MESSAGE]- (u2) create (u1) - [r3:MESSAGE]-> (newM:Message{senderID: '"+senderID+"', senderAvatar: u1.avatar, senderName: u1.name, date: '"+date+"', message: '"+message+"'}) <- [r4:MESSAGE] - (u2) delete r1, r2 with oldM, newM where oldM is not null create (newM)- [:NEXT] -> (oldM)";
+	var query = "match (u1:User{id: '"+senderID+"'}), (u2:User{id: '"+targetID+"'}) "
+	+ " merge (u1) - [noti:NOTIFICATION {name : u1.name, avatar : u1.avatar, content : 'message'}] -> (u2) set noti.date = '" + date + "' with u1, u2"
+	+ " optional match (u1) - [r1:MESSAGE] - > (oldM:Message) < - [r2:MESSAGE]- (u2) create (u1) - [r3:MESSAGE]-> (newM:Message{senderID: '"+senderID+"', senderAvatar: u1.avatar, senderName: u1.name, date: '"+date+"', message: '"+message+"'}) <- [r4:MESSAGE] - (u2) delete r1, r2 with oldM, newM where oldM is not null create (newM)- [:NEXT] -> (oldM)";
 	database.runCypherQuery(query, null, callback);
 }
 
