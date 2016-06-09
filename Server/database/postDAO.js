@@ -28,8 +28,10 @@ module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
    	database.runCypherQuery(query, null, callback);
 }
 
-module.exports.likeThisPost = function(userID, postID, callback) {
-	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) create (u) - [:LIKE] - > (p)";
+module.exports.likeThisPost = function(userID, postID, day, callback) {
+	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) <-[:POST] - (u2:User) MERGE (u) - [:LIKE] - > (p) "
+			+ " merge (p) - [noti:NOTIFICATION {name : u.name, avatar : u.avatar, content : 'like'}] -> (u2) SET noti.date = '" + day + "' "
+			+ " return u2.regID, u2.id, p.id";
    	database.runCypherQuery(query, null, callback);
 }
 
@@ -38,8 +40,10 @@ module.exports.unLikeThisPost = function(userID, postID, callback) {
    	database.runCypherQuery(query, null, callback);
 }
 
-module.exports.shareThisPost = function(userID, postID, callback) {
-	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) create (u) - [:SHARE{name : 'shared'}] - > (p)";
+module.exports.shareThisPost = function(userID, postID, day, callback) {
+	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) <-[:POST] - (u2:User) MERGE (u) - [:SHARE{name : 'shared'}] - > (p) "
+				+ " merge (p) - [noti:NOTIFICATION {name : u.name, avatar : u.avatar, content : 'share'}] -> (u2) SET noti.date = '" + day + "' "
+				+ " return u2.regID, u2.id, p.id";
    	database.runCypherQuery(query, null, callback);
 }
 

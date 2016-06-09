@@ -1,7 +1,7 @@
 var database = require('./database.js');
 
 module.exports.getUserNotification = function(userID, callback) {
-	var query = "match (me:User{id : '" + userID + "'}) < - [n:NOTIFICATION] - (p) return n.name, n.avatar, n.content, n.date, p.id";
+	var query = "match (me:User{id : '" + userID + "'}) < - [n:NOTIFICATION] - (p) where n.content <> 'message' and n.content <> 'add' return n.name, n.avatar, n.content, n.date, p.id";
     database.runCypherQuery(query, null, callback);
 }
 

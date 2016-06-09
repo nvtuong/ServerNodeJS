@@ -158,7 +158,6 @@ module.exports.addFriendCallback = function(response, err, result, targetID) {
 	else {
 		var regID = [result.data[0][0]];
 		var param = result.data[0][1];		
-		console.log(regID)
 		var content = "add";
 		messageHelper.pushNotificationWithParam(content, param, regID, targetID, function (err ,result){
 			if(err){

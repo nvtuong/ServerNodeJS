@@ -56,8 +56,20 @@ console.log(result);
 	if(err)
 		responseBadRequest(response, err);
 	else{
-		response.status(200);
-		response.send();
+		var	regID = [result.data[0][0]];
+		var targetID = result.data[0][1];
+		var param = result.data[0][2];
+		var content = "like";
+		messageHelper.pushNotificationWithParam(content, param, regID, targetID, function (err ,result){
+			if(err){
+				console.log(err);
+				responseBadRequest(response, err);
+			}
+			else{
+				response.status(200);
+				response.send();
+			}
+		});
 	}
 }
 
@@ -72,12 +84,25 @@ module.exports.unLikeThisPostCallBack = function(response, err, result) {
 }
 
 module.exports.shareThisPostCallBack = function(response, err, result) {
+	console.log("SHARE caLL BACK");
 	console.log(result);
 	if(err)
 		responseBadRequest(response, err);
 	else{
-		response.status(200);
-		response.send();
+		var	regID = [result.data[0][0]];
+		var targetID = result.data[0][1];
+		var param = result.data[0][2];
+		var content = "share";
+		messageHelper.pushNotificationWithParam(content, param, regID, targetID, function (err ,result){
+			if(err){
+				console.log(err);
+				responseBadRequest(response, err);
+			}
+			else{
+				response.status(200);
+				response.send();
+			}
+		});
 	}
 }
 
@@ -86,19 +111,6 @@ module.exports.createPostCallBack = function(response, err, result) {
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
-		/*
-		var userID = result.data[0][15];
-		postDAO.getRegIDofFriend(userID, function(err, result){
-			if (result){
-				var content = "home";
-				var regID  = result.data[0];
-				var param = userID;
-				messageHelper.pushNotificationWithParam(content, param, regID, 'null', function (err ,result){
-					
-				});
-			}
-		});
-		*/
 		var post = parsePostModel(result.data)
 		response.status(200);
 		response.send(post[0]);

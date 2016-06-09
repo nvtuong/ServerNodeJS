@@ -14,7 +14,7 @@ module.exports.getAllPostOfUserService = function(req, res) {
 };
 
 module.exports.likeThisPostService = function(req, res) {
-	postDAO.likeThisPost(req.body.userID, req.body.postID, function(err, result){
+	postDAO.likeThisPost(req.body.userID, req.body.postID, req.body.day, function(err, result){
 		postCallback.likeThisPostCallBack(res, err, result);
 	});
 };
@@ -26,7 +26,7 @@ module.exports.unLikeThisPostService = function(req, res) {
 };
 
 module.exports.shareThisPostService = function(req, res) {
-	postDAO.shareThisPost(req.body.userID, req.body.postID, function(err, result){
+	postDAO.shareThisPost(req.body.userID, req.body.postID, req.body.day, function(err, result){
 		postCallback.shareThisPostCallBack(res, err, result);
 	});
 };

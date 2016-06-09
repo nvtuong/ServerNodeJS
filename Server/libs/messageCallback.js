@@ -45,8 +45,9 @@ module.exports.getAllMessagesCallback = function(response, err, result) {
 
 module.exports.getMessageOfUserCallback = function(response, err, result) {
 	console.log(result);
-	if(err)
+	if(err){
 		responseBadRequest(response, err);
+	}
 	else {
 		var messages = parseMessageModel(result.data);
 		response.status(200);

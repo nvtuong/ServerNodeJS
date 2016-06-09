@@ -53,23 +53,22 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 	}
 	else {
 		console.log(result);
-		var comments = parseONECommentModel(result);
 		var content = "comment";
-		var param = result.data[0][7];
+		var param = result.data[0][1];
 
-		var listID = result.data[0][8];
 		var has = false;
-		var listRegID = result.data[0][9];
+		var listRegID = result.data[0][3];
 		for (var i = 0; i < listRegID.length; ++i){
-			if (listRegID[i] == result.data[0][6]) {
+			if (listRegID[i] == result.data[0][0]) {
 				has = true;
 			};
 		}
 		if (has == false) {
-			listRegID.push(result.data[0][6]);
+			listRegID.push(result.data[0][0]);
 		};
 
-		var strIDs = result.data[0][10];
+		var listID = result.data[0][2];	
+		var strIDs = result.data[0][4];
 		for (var i = 0; i < listID.length; i++) 
 			strIDs += listID[i] + " ";
 
@@ -80,7 +79,7 @@ module.exports.createNewCommentOfPostCallBack = function(response, err, result) 
 			}
 			else{
 				response.status(200);
-				response.send(comments);
+				response.send();
 			}
 		});
 		
