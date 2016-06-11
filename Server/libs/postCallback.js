@@ -8,7 +8,7 @@ function responseBadRequest(response, err) {
 
 function parsePostModel(data){
 	var cols = ["postID", "content", "listImages", "Latitude", "Longitude", "postDate", 
-		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike", "tag"];
+		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike"];
 	var posts = [];
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];
@@ -16,24 +16,17 @@ function parsePostModel(data){
 		for (var col = 0; col < cols.length - 1; col++) {
 			post[cols[col]] = item[col];
 		}
-		var tags = item[cols.length - 1];
-		var stringTags = "";
-		for (var tag = 0; tag < tags.length; tag++)
-			stringTags += tags[tag] + ",";
-		if (stringTags.length == 0)
-			stringTags = "No Tag ";
-		stringTags = stringTags.slice(0, stringTags.length - 1);
-		stringTags = stringTags.replace(/,/g, ", ");
-		post["tag"] = stringTags;
 		posts.push(post);
 	}
 	return posts;
 }
 
 module.exports.getAllPostOfFriendsCallback = function(response, err, result) {
-	console.log(result);
-	if(err || result.data[0] == null)
+	//console.log(result);
+	if(err || result.data[0] == null) {
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
 		var posts = parsePostModel(result.data);
 		response.status(200);

@@ -35,7 +35,7 @@ module.exports.createPostService = function(req, res) {
 	console.log("createPost");
 	postDAO.createPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
 			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
-			req.body.tag, function(err, result){
+			function(err, result){
 					postCallback.createPostCallBack(res, err, result);
 	});
 };
