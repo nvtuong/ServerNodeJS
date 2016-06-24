@@ -60,5 +60,26 @@ module.exports.getPostDetailService = function(req, res) {
 	});
 };
 
+module.exports.getAllPostOfTourService = function(req, res) {
+	postDAO.getAllPostOfTour(req.body.tourID, function(err, result) {
+		postCallback.getAllPostOfTourCallback(res, err, result);
+	});
+};
 
+module.exports.likeTourPostService = function(req, res) {
+	postDAO.likeTourPost(req.body.userID, req.body.postID, req.body.day, function(err, result){
+		postCallback.likeThisPostCallBack(res, err, result);
+	});
+};
 
+module.exports.shareTourPostService = function(req, res) {
+	postDAO.shareTourPost(req.body.userID, req.body.postID, req.body.day, function(err, result){
+		postCallback.shareThisPostCallBack(res, err, result);
+	});
+};
+
+module.exports.getPostTourDetailService = function(req, res) {
+	postDAO.getPostTourDetail(req.body.userID, req.body.dataID, function(err, result) {
+		postCallback.getPostDetailCallback(res, err, result);
+	});
+};

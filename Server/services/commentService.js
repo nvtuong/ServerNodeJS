@@ -18,3 +18,9 @@ module.exports.getLastCommentOfPostService = function(req, res) {
 		commentCallback.getLastCommentOfPostCallback(res, err, result);
 	});
 };
+
+module.exports.createNewCommentTourPostService = function(req, res) {
+	commentDAO.createNewCommentTourPost(req.body.postID, req.body.userID, req.body.content, req.body.day, function(err, result){
+		commentCallback.createNewCommentOfPostCallBack(res, err, result);
+	});
+};

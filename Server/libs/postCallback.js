@@ -147,3 +147,16 @@ module.exports.getPostDetailCallback = function(response, err, result) {
 		response.send(posts[0]);
 	}
 }
+
+module.exports.getAllPostOfTourCallback = function(response, err, result) {
+	//console.log(result);
+	if(err || result.data[0] == null) {
+		console.log(err);
+		responseBadRequest(response, err);
+	}
+	else {
+		var posts = parsePostModel(result.data);
+		response.status(200);
+		response.send(posts);
+	}
+}

@@ -26,3 +26,14 @@ module.exports.getLastCommentOfPost = function(postID, callback) {
                         + "return c.id, c.content, c.day, u.id, u.name, u.avatar ORDER BY c.day DESC LIMIT 1";
     database.runCypherQuery(query, null, callback);
 }
+
+module.exports.createNewCommentTourPost = function(postID, userID, content, day, callback) {
+	var cid = puid.getUniqueID();
+	var query = "match (p:Post{id: '" + postID + "'}) <- [:HAS_POST] - (t:Tour) <- [:TOUR] - (u:User), (me:User{id : '" + userID + "'}) " 
+				+ " merge (p) - [noti:NOTIFICATION{name : me.name, avatar : me.avatar, content : 'comment_tour'}] -> (u) SET noti.date = '" + day + "'"
+				+ " create (p) - [h:HAS_COMMENT] -> " 
+				+ " (c:Comment{id : '" + postID + cid + "', content : '" + content + "', day : '" + day + "', userID : '" + userID + "'}) "
+                + " with u, p match (u) <- [fff:FRIEND] - (u5:User)"
+                + " return u.regID, p.id, collect(u5.id), collect(distinct u5.regID), u.id";
+    database.runCypherQuery(query, null, callback);
+}

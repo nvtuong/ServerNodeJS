@@ -9,6 +9,7 @@ var postService = require('./services/postService.js');
 var commentService = require('./services/commentService.js');
 var notificationService = require('./services/notificationService.js');
 var messageService = require('./services/messageService.js');
+var tourService = require('./services/tourService.js');
 
 
 /*-----------------------------INIT--------------------------------*/
@@ -61,6 +62,11 @@ app.post('/api/createPost', postService.createPostService);
 app.post('/api/SearchPost', postService.SearchPostService);
 app.post('/api/SearchPostByDistance', postService.SearchPostByDistanceService);
 app.post('/api/getPostDetail', postService.getPostDetailService);
+app.post('/api/getAllPostOfTour', postService.getAllPostOfTourService);
+app.post('/api/likeTourPost', postService.likeTourPostService);
+app.post('/api/shareTourPost', postService.shareTourPostService);
+app.post('/api/getPostTourDetail', postService.getPostTourDetailService);
+
 
 /*-----------------------------------END----------------------------------------------*/
 
@@ -71,6 +77,7 @@ app.post('/api/getPostDetail', postService.getPostDetailService);
 app.post('/api/getAllCommentsOfPost', commentService.getAllCommentsOfPostService);
 app.post('/api/createNewCommentOfPost', commentService.createNewCommentOfPostService);
 app.post('/api/getLastCommentOfPost', commentService.getLastCommentOfPostService);
+app.post('/api/createNewCommentTourPost', commentService.createNewCommentTourPostService);
 
 /*-----------------------------------END----------------------------------------------*/
 
@@ -130,16 +137,26 @@ app.post('/api/uploadImages', function(req, res) {
 })
 
 
-app.post('/api/sendMessage', messageService.sendMessageService);
+/*---------------------------API for message-------------------------*/
 
+app.post('/api/sendMessage', messageService.sendMessageService);
 app.post('/api/getAllMessages', messageService.getAllMessages);
 app.post('/api/loadMessageOfUser', messageService.getMessageOfUser);
 app.post('/api/loadOneMessageOfUser', messageService.loadOneMessageOfUser);
 app.post('/api/sendMessageToUser', messageService.sendMessageToUser);
 
-
-
 /*------------------------------END-------------------------------*/
+
+/*---------------------------------API for tour-------------------------------*/
+
+app.post('/api/createTour', tourService.createTourService);
+app.post('/api/createPostOnTour', tourService.createPostOnTourService);
+app.post('/api/stopTourLive', tourService.stopTourLiveService);
+app.post('/api/getAllLiveTour', tourService.getAllLiveTourService);
+app.post('/api/getAllMyTour', tourService.getAllMyTourService);
+
+
+/*----------------------------END-----------------------------------------*/
 
 
 app.get('/api/getSampleId', function(req, res){

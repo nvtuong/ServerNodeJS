@@ -25,7 +25,7 @@ function parseMessageModel(data) {
 		message["senderID"] = temp[0];
 		message["senderName"] = temp[1];
 		message["senderAvatar"] = temp[2];
-		message["date"] = temp[3];
+		message["messageDate"] = temp[3];
 		message["message"] = temp[4];
 		messages.push(message);
 	}

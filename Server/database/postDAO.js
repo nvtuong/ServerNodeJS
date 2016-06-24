@@ -118,3 +118,40 @@ module.exports.getPostDetail = function(userID, dataID, callback) {
 			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
    	database.runCypherQuery(query, null, callback);
 }
+
+module.exports.getAllPostOfTour = function(tourID, callback) {
+	var query = "match (u:User) - [:TOUR] - > (t:Tour{id : '" + tourID + "'}) - [:HAS_POST] -> (p:Post)"
+			+ " Optional match (p) <- [s:SHARE] - (u1:User) "
+			+ " Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ " Optional match (u) -[iss:LIKE]-> (p) "
+			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike "
+			+ " ORDER BY p.day DESC limit 20";
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.likeTourPost = function(userID, postID, day, callback) {
+	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) <- [:HAS_POST] - (t:Tour) <-[:TOUR] - (u2:User) MERGE (u) - [:LIKE] - > (p) "
+			+ " merge (p) - [noti:NOTIFICATION {name : u.name, avatar : u.avatar, content : 'like_tour'}] -> (u2) SET noti.date = '" + day + "' "
+			+ " return u2.regID, u2.id, p.id";
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.shareTourPost = function(userID, postID, day, callback) {
+	var query = "match (u:User{id : '" + userID + "'}), (p:Post{id : '" + postID + "'}) <- [:HAS_POST] - (t:Tour) <-[:TOUR] - (u2:User) MERGE (u) - [:SHARE{name : 'shared'}] - > (p) "
+				+ " merge (p) - [noti:NOTIFICATION {name : u.name, avatar : u.avatar, content : 'share_tour'}] -> (u2) SET noti.date = '" + day + "' "
+				+ " return u2.regID, u2.id, p.id";
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.getPostTourDetail = function(userID, dataID, callback) {
+	var query = "match (p:Post{id : '" + dataID + "'}) <- [:HAS_POST] - (t:Tour) <-[:TOUR] - (u:User) "
+			+ " Optional match (p) <- [s:SHARE] - (u1:User) "
+			+ " Optional match (p) <- [l:LIKE] - (u2:User) "
+			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
+			+ " Optional match (me:User{id : '" + userID + "'}) -[iss:LIKE]-> (p) "
+			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+   	database.runCypherQuery(query, null, callback);
+}
