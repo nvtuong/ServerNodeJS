@@ -5,14 +5,6 @@ function responseBadRequest(response, err) {
 	response.send(err);
 }
 
-module.exports.getUserInforCallback = function(response, err, result) {
-	if(err) 
-		responseBadRequest(response, err);
-	else {
-		response.status(200);
-		response.send(result.data[0]);
-	}
-}
 
 function parseFriendModel(data) {
 	var friends = [];

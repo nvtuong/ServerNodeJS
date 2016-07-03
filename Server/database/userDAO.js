@@ -1,14 +1,6 @@
 var database = require('./database.js');
 
 
-// return User model
-
-/*module.exports.getUserInfor = function(userID, callback) {
-	var query = "match (user:User{id : '" + userID + "'}) return user.name, user.avatar, user.regID";
-	database.runCypherQuery(query, null, callback);
-}*/
-
-
 module.exports.getUserRegId = function(userID, callback) {
 	var query = "match (user:User{id: '" + userID + "'}) return user.regID";
 	database.runCypherQuery(query, null, callback);
@@ -29,7 +21,7 @@ module.exports.getSuggestFriends = function(userID, callback) {
 }	
 
 module.exports.getProfileOfUser = function(userID, callback) {
-	var query = "match (a:Account{id : '" + userID + "'})- [aa:USER_ACCOUNT] -> (u:User) - [pp:PRO_FILE]-> (p:Profile) "
+	var query = "match (a:Account)- [aa:USER_ACCOUNT] -> (u:User{id : '" + userID + "'}) - [pp:PRO_FILE]-> (p:Profile) "
 			+ " Optional match (u) - [f:FRIEND] - (u1:User) Optional match (u) - [post:POST] -> (p1:Post) "
 			+ " Optional match (u) <- [fol:FOLLOW] - (u2:User)  return u.avatar, u.name, p.gender, p.birthday, " 
 			+ " p.address, a.email, count (distinct f) as numFriend, count (distinct post) as numPost, count (distinct fol) as numFollow";

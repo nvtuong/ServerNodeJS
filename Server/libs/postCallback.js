@@ -8,12 +8,12 @@ function responseBadRequest(response, err) {
 
 function parsePostModel(data){
 	var cols = ["postID", "content", "listImages", "Latitude", "Longitude", "postDate", 
-		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike"];
+		"feeling", "userName", "userAvatar", "relationShip", "numShare", "numLike", "numComment", "isYouLike", "userID"];
 	var posts = [];
 	for (var i = 0; i < data.length; i++){
 		var item = data[i];
 		var post = {};
-		for (var col = 0; col < cols.length - 1; col++) {
+		for (var col = 0; col < cols.length; col++) {
 			post[cols[col]] = item[col];
 		}
 		posts.push(post);
@@ -22,7 +22,6 @@ function parsePostModel(data){
 }
 
 module.exports.getAllPostOfFriendsCallback = function(response, err, result) {
-	//console.log(result);
 	if(err || result.data[0] == null) {
 		console.log(err);
 		responseBadRequest(response, err);
@@ -45,7 +44,6 @@ module.exports.getAllPostOfUserCallback = function(response, err, result) {
 }
 
 module.exports.likeThisPostCallBack = function(response, err, result) {
-console.log(result);
 	if(err)
 		responseBadRequest(response, err);
 	else{
@@ -100,18 +98,15 @@ module.exports.shareThisPostCallBack = function(response, err, result) {
 }
 
 module.exports.createPostCallBack = function(response, err, result) {
-	console.log(result);
 	if(err || result.data[0] == null)
 		responseBadRequest(response, err);
 	else {
-		var post = parsePostModel(result.data)
 		response.status(200);
-		response.send(post[0]);
+		response.send();
 	}
 }
 
 module.exports.SearchPostCallback = function(response, err, result) {
-	console.log(result);
 	if(err || result.data[0] == null){
 		console.log(err);
 		responseBadRequest(response, err);
@@ -124,7 +119,6 @@ module.exports.SearchPostCallback = function(response, err, result) {
 }
 
 module.exports.SearchPostByDistanceCallback = function(response, err, result) {
-	console.log(result);
 	if(err || result.data[0] == null){
 		console.log(err);
 		responseBadRequest(response, err);
@@ -136,7 +130,6 @@ module.exports.SearchPostByDistanceCallback = function(response, err, result) {
 }
 
 module.exports.getPostDetailCallback = function(response, err, result) {
-	console.log(result);
 	if(err || result.data[0] == null){
 		console.log(err);
 		responseBadRequest(response, err);
@@ -149,7 +142,6 @@ module.exports.getPostDetailCallback = function(response, err, result) {
 }
 
 module.exports.getAllPostOfTourCallback = function(response, err, result) {
-	//console.log(result);
 	if(err || result.data[0] == null) {
 		console.log(err);
 		responseBadRequest(response, err);
@@ -158,5 +150,29 @@ module.exports.getAllPostOfTourCallback = function(response, err, result) {
 		var posts = parsePostModel(result.data);
 		response.status(200);
 		response.send(posts);
+	}
+}
+
+module.exports.createNewPostOnTourCallBack = function(response, err, result) {
+	if(err || result.data[0] == null) {
+		console.log(err);
+		responseBadRequest(response, err);
+	}
+	else {
+		var posts = parsePostModel(result.data);
+		response.status(200);
+		response.send(posts[0]);
+	}
+}
+
+module.exports.editPostCallBack = function(response, err, result) {
+	if(err || result.data[0] == null) {
+		console.log(err);
+		responseBadRequest(response, err);
+	}
+	else {
+		var posts = parsePostModel(result.data);
+		response.status(200);
+		response.send(posts[0]);
 	}
 }

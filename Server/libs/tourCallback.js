@@ -54,8 +54,10 @@ function parseTourModel(data){
 
 module.exports.getAllLiveTourCallback = function(response, err, result) {
 	console.log("getAllLiveTour call back");
-	if(err || result.data[0] == null) 
+	if(err || result.data[0] == null) {
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
 		var tours = parseTourModel(result.data);
 		response.status(200);

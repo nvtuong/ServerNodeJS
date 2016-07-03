@@ -9,7 +9,7 @@ module.exports.getAllPostOfFriends = function(userID, callback) {
 			+ "Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike "
+			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, uu.id "
 			+ " ORDER BY p.day DESC limit 20";
     database.runCypherQuery(query, null, callback);
 }
@@ -23,7 +23,7 @@ module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike "
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id "
 			+ " ORDER BY p.day DESC limit 20";
    	database.runCypherQuery(query, null, callback);
 }
@@ -58,9 +58,7 @@ module.exports.createPost = function(postID, userID, content, date, Latitude, Lo
 		+" feeling : '" + feeling + "', Latitude : " +  Latitude + ", Longitude : " + Longitude + ", day :'" + date +"'})"
 		+ " MERGE (q0:Quad0{Latitude : " + Latitude0 + ", Longitude : " + Longitude0 + "}) "
 		+ " MERGE (q0) - [:QUAD0] -> (q2:Quad2{Latitude : " + Latitude2 + ", Longitude : " + Longitude2 + "}) "
-		+ " MERGE (q2)-[:QUAD2] -> (p)"
-   		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, u.id";	
+		+ " MERGE (q2)-[:QUAD2] -> (p)";	
    	database.runCypherQuery(query, null, callback);
 }
 
@@ -77,7 +75,7 @@ module.exports.SearchPost = function(userID, params, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return distinct p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike"
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, uu.id "
 			+ " ORDER BY p.day LIMIT 10";
     database.runCypherQuery(query, null, callback);
 }
@@ -104,7 +102,7 @@ module.exports.SearchPostByDistance = function(userID, Latitude, Longitude, Lati
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, uu.id ";
     database.runCypherQuery(query, null, callback);
 }
 
@@ -115,7 +113,7 @@ module.exports.getPostDetail = function(userID, dataID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (me:User{id : '" + userID + "'}) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id";
    	database.runCypherQuery(query, null, callback);
 }
 
@@ -126,7 +124,7 @@ module.exports.getAllPostOfTour = function(tourID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike "
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id "
 			+ " ORDER BY p.day DESC limit 20";
    	database.runCypherQuery(query, null, callback);
 }
@@ -152,6 +150,32 @@ module.exports.getPostTourDetail = function(userID, dataID, callback) {
 			+ " Optional match (p) - [h: HAS_COMMENT] - > (c1:Comment) "
 			+ " Optional match (me:User{id : '" + userID + "'}) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
-			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike";
+			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id ";
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.createNewPostOnTour = function(postID, tourID, content, date, Latitude, Longitude, feeling, listImages, callback) {
+	var query = "match (u:User) - [:TOUR] -> (t:Tour{id : '" + tourID + "'}) SET t.stopID = '" + postID + "' "
+		+ " CREATE (t) - [:HAS_POST] -> (p:Post{id :'" + postID + "', content : '" + content + "', listImage: '"+ listImages + "', "
+		+ " feeling : '" + feeling + "', Latitude : " +  Latitude + ", Longitude : " + Longitude + ", day :'" + date +"'})"
+		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
+		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, u.id";		
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.editPost = function(postID, userID, content, date, Latitude, Longitude, feeling, listImages, callback) {
+	var Latitude0 = Math.round(Latitude);
+	var Longitude0 = Math.round(Longitude);
+	var Latitude2 = Math.round(Latitude * 100) / 100;
+	var Longitude2 = Math.round(Longitude * 100) / 100;
+
+	var query = "match (u:User{id : '" + userID + "'}) - [r:POST] -> (p:Post{id : '" + postID + "'}) <- [qq:QUAD2] - (q222:Quad2) DELETE qq " 
+		+ " SET p.content = '" + content + "', p.listImage = '"+ listImages + "',"
+		+ " p.feeling = '" + feeling + "', p.Latitude = " +  Latitude + ", p.Longitude : " + Longitude + ", p.day = '" + date +"' "
+		+ " MERGE (q0:Quad0{Latitude : " + Latitude0 + ", Longitude : " + Longitude0 + "}) "
+		+ " MERGE (q0) - [:QUAD0] -> (q2:Quad2{Latitude : " + Latitude2 + ", Longitude : " + Longitude2 + "}) "
+		+ " MERGE (q2) - [:QUAD2] -> (p)"
+		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
+		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, u.id";		
    	database.runCypherQuery(query, null, callback);
 }

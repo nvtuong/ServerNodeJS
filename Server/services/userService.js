@@ -3,13 +3,6 @@ var userCallback = require('../libs/userCallback.js');
 var puid = require('../libs/lib.js');
 var writingHelper = require('../libs/writingHelper.js');
 
-/*
-module.exports.getUserInforService = function(req, res ){
-	userDAO.getUserInfor(req.body.userID, function(err, result) {
-		userCallback.getUserInforCallback(res, err, result);
-	});
-};
-*/
 
 module.exports.getAllFriendsService = function(req, res) {
 	userDAO.getAllFriends(req.body.userID, function(err, result) {

@@ -34,7 +34,6 @@ app.post('/api/changePassword', accountService.changePasswordService);
 
 
 /*------------------------------API for User --------------------------------*/
-//app.post('/api/getUserInfor', userService.getUserInforService);
 app.post('/api/getAllFriends', userService.getAllFriendsService);
 app.post('/api/getSuggestFriends', userService.getSuggestFriendsService);
 app.post('/api/updateProfile', userService.updateProfileService);
@@ -66,7 +65,8 @@ app.post('/api/getAllPostOfTour', postService.getAllPostOfTourService);
 app.post('/api/likeTourPost', postService.likeTourPostService);
 app.post('/api/shareTourPost', postService.shareTourPostService);
 app.post('/api/getPostTourDetail', postService.getPostTourDetailService);
-
+app.post('/api/createNewPostOnTour', postService.createNewPostOnTourService);
+app.post('/api/editPost', postService.editPostService);
 
 /*-----------------------------------END----------------------------------------------*/
 

@@ -32,7 +32,6 @@ module.exports.shareThisPostService = function(req, res) {
 };
 
 module.exports.createPostService = function(req, res) {
-	console.log("createPost");
 	postDAO.createPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
 			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
 			function(err, result){
@@ -81,5 +80,21 @@ module.exports.shareTourPostService = function(req, res) {
 module.exports.getPostTourDetailService = function(req, res) {
 	postDAO.getPostTourDetail(req.body.userID, req.body.dataID, function(err, result) {
 		postCallback.getPostDetailCallback(res, err, result);
+	});
+};
+
+module.exports.createNewPostOnTourService = function(req, res) {
+	postDAO.createNewPostOnTour(req.body.postID, req.body.tourID, req.body.content, req.body.date, 
+			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
+			function(err, result){
+					postCallback.createNewPostOnTourCallBack(res, err, result);
+	});
+};
+
+module.exports.editPostService = function(req, res) {
+	postDAO.editPost(req.body.postID, req.body.userID, req.body.content, req.body.date, 
+			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
+			function(err, result){
+					postCallback.editPostCallBack(res, err, result);
 	});
 };

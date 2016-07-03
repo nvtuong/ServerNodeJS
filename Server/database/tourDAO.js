@@ -25,7 +25,7 @@ module.exports.stopTourLive = function(tourID, callback) {
 }
 
 module.exports.getAllLiveTour = function(userID, callback) {
-	var query = "match (u:User{id : '" + userID + "'}) - [:FRIEND] -> (f:User) - [:TOUR] -> (t:Tour{status = 1}) - [h:HAS_POST] -> (p:Post) "
+	var query = "match (u:User{id : '" + userID + "'}) - [:FRIEND] -> (f:User) - [:TOUR] -> (t:Tour{status : 1}) - [h:HAS_POST] -> (p:Post) "
 			+ " with f.name as name, f.avatar as avatar, count (distinct h) as numPlaces, t.id as id, t.startID as startID, t.stopID as stopID "
 			+ " match (start:Post{id : startID}), (stop:Post{id : stopID}) "
 			+ " optional match (start) - [h1:HAS_COMMENT] - (c1:Comment) optional match (start) - [s1:SHARE] - (u1:User) optional match (start) - [l1:LIKE] - (u11:User) "
