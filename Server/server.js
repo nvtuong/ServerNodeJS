@@ -67,6 +67,7 @@ app.post('/api/shareTourPost', postService.shareTourPostService);
 app.post('/api/getPostTourDetail', postService.getPostTourDetailService);
 app.post('/api/createNewPostOnTour', postService.createNewPostOnTourService);
 app.post('/api/editPost', postService.editPostService);
+app.post('/api/editPostTour', postService.editPostTourService);
 
 /*-----------------------------------END----------------------------------------------*/
 

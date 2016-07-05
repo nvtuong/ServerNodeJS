@@ -98,8 +98,10 @@ module.exports.shareThisPostCallBack = function(response, err, result) {
 }
 
 module.exports.createPostCallBack = function(response, err, result) {
-	if(err || result.data[0] == null)
+	if(err){
+		console.log(err);
 		responseBadRequest(response, err);
+	}
 	else {
 		response.status(200);
 		response.send();
@@ -166,6 +168,18 @@ module.exports.createNewPostOnTourCallBack = function(response, err, result) {
 }
 
 module.exports.editPostCallBack = function(response, err, result) {
+	if(err || result.data[0] == null) {
+		console.log(err);
+		responseBadRequest(response, err);
+	}
+	else {
+		var posts = parsePostModel(result.data);
+		response.status(200);
+		response.send(posts[0]);
+	}
+}
+
+module.exports.editPostTourCallback = function(response, err, result) {
 	if(err || result.data[0] == null) {
 		console.log(err);
 		responseBadRequest(response, err);

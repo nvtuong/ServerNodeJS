@@ -98,3 +98,11 @@ module.exports.editPostService = function(req, res) {
 					postCallback.editPostCallBack(res, err, result);
 	});
 };
+
+module.exports.editPostTourService = function(req, res) {
+	postDAO.editPostTour(req.body.postID, req.body.userID, req.body.content, req.body.date, 
+			req.body.Latitude, req.body.Longitude, req.body.feeling, req.body.listImages,
+			function(err, result){
+					postCallback.editPostTourCallback(res, err, result);
+	});
+};

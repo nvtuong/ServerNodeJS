@@ -60,6 +60,7 @@ module.exports.createPost = function(postID, userID, content, date, Latitude, Lo
 		+ " MERGE (q0) - [:QUAD0] -> (q2:Quad2{Latitude : " + Latitude2 + ", Longitude : " + Longitude2 + "}) "
 		+ " MERGE (q2)-[:QUAD2] -> (p)";	
    	database.runCypherQuery(query, null, callback);
+   	console.log(query);
 }
 
 module.exports.getRegIDofFriend = function(userID, callback) {
@@ -171,11 +172,20 @@ module.exports.editPost = function(postID, userID, content, date, Latitude, Long
 
 	var query = "match (u:User{id : '" + userID + "'}) - [r:POST] -> (p:Post{id : '" + postID + "'}) <- [qq:QUAD2] - (q222:Quad2) DELETE qq " 
 		+ " SET p.content = '" + content + "', p.listImage = '"+ listImages + "',"
-		+ " p.feeling = '" + feeling + "', p.Latitude = " +  Latitude + ", p.Longitude : " + Longitude + ", p.day = '" + date +"' "
+		+ " p.feeling = '" + feeling + "', p.Latitude = " +  Latitude + ", p.Longitude = " + Longitude + ", p.day = '" + date +"' "
 		+ " MERGE (q0:Quad0{Latitude : " + Latitude0 + ", Longitude : " + Longitude0 + "}) "
 		+ " MERGE (q0) - [:QUAD0] -> (q2:Quad2{Latitude : " + Latitude2 + ", Longitude : " + Longitude2 + "}) "
 		+ " MERGE (q2) - [:QUAD2] -> (p)"
 		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
+		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, u.id";		
+   	database.runCypherQuery(query, null, callback);
+}
+
+module.exports.editPostTour = function(postID, userID, content, date, Latitude, Longitude, feeling, listImages, callback) {
+	var query = "match (u:User{id : '" + userID + "'}) - [:TOUR] -> (tou:Tour) - [r:HAS_POST] -> (p:Post{id : '" + postID + "'}) " 
+		+ " SET p.content = '" + content + "', p.listImage = '"+ listImages + "',"
+		+ " p.feeling = '" + feeling + "', p.Latitude = " +  Latitude + ", p.Longitude = " + Longitude + ", p.day = '" + date +"' "
+		+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, 'tour', "
 		+ " 0 as numShared, 0 as numLiked, 0 as numComment, 0 as isYouLike, u.id";		
    	database.runCypherQuery(query, null, callback);
 }
