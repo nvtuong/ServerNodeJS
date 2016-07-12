@@ -2,7 +2,7 @@ var postDAO = require('../database/postDAO.js');
 var postCallback = require('../libs/postCallback.js');
 
 module.exports.getAllPostOfFriendsService = function(req, res) {
-	postDAO.getAllPostOfFriends(req.body.userID, function(err, result) {
+	postDAO.getAllPostOfFriends(req.body.userID, req.body.page, function(err, result) {
 		postCallback.getAllPostOfFriendsCallback(res, err, result);
 	});
 };

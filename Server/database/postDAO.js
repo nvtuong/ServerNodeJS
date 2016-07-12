@@ -2,7 +2,7 @@ var database = require('./database.js');
 
 // return a list of Post model contains posts of all friends
 // limit 20 posts per list
-module.exports.getAllPostOfFriends = function(userID, callback) {
+module.exports.getAllPostOfFriends = function(userID, page, callback) {
 	var query = "match (u:User{id : '" + userID + "'})-[:FRIEND]-> (uu : User) - [r : POST|:SHARE]-> (p:Post) " 
 			+ "Optional match (p) <- [s:SHARE] - (u1:User) " 
 			+ "Optional match (p) <- [l:LIKE] - (u2:User) "
@@ -10,7 +10,7 @@ module.exports.getAllPostOfFriends = function(userID, callback) {
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
 			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, uu.id "
-			+ " ORDER BY p.day DESC limit 20";
+			+ " ORDER BY p.day DESC skip " + page * 10 + " limit 10";
     database.runCypherQuery(query, null, callback);
 }
 
