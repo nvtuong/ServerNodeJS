@@ -6,9 +6,8 @@ module.exports.getAllMessages = function(userID, callback) {
 }
 
 module.exports.getMessageOfUser = function(userID, targetUserID, skip, callback) {
-	var limit = 20 * skip + 20;
-	var s = skip * 20;
-	var query = "match (u1:User{id: '" + userID + "'}) - [r1:MESSAGE] - > (oldM:Message) < - [r2:MESSAGE] - (u2:User{id: '" + targetUserID + "'}) with oldM where oldM is not null match n = (oldM)-[:NEXT*.." + limit + "]-> (m) unwind nodes(n) as x return distinct x.senderID, x.senderName, x.senderAvatar, x.date, x.message skip " + s;
+	var limit = skip + 20;
+	var query = "match (u1:User{id: '" + userID + "'}) - [r1:MESSAGE] - > (oldM:Message) < - [r2:MESSAGE] - (u2:User{id: '" + targetUserID + "'}) with oldM where oldM is not null match n = (oldM)-[:NEXT*.." + limit + "]-> (m) unwind nodes(n) as x return distinct x.senderID, x.senderName, x.senderAvatar, x.date, x.message skip " + skip;
 	database.runCypherQuery(query, null, callback);
 }
 

@@ -5,7 +5,7 @@ var puid = require('../libs/lib.js');
 // parameter: postID
 module.exports.getAllCommentsOfPost = function(postID, skip, callback) {
 	var query = "match (p:Post{id: '" + postID + "'}) - [HAS_COMMENT] -> (c:Comment), (u:User{id : c.userID}) "
-                        + "return c.id, c.content, c.day, u.id, u.name, u.avatar ORDER BY c.day ASC skip " + skip*10 + " limit 10";
+                        + "return c.id, c.content, c.day, u.id, u.name, u.avatar ORDER BY c.day DESC skip " + skip + " limit 10";
     database.runCypherQuery(query, null, callback);
 }
 

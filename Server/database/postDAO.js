@@ -10,7 +10,7 @@ module.exports.getAllPostOfFriends = function(userID, page, callback) {
 			+ "Optional match (u) -[iss:LIKE]-> (p) "
 			+ "return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling,uu.name, uu.avatar, r.name, "
 			+ "count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, uu.id "
-			+ " ORDER BY p.day DESC skip " + page * 10 + " limit 10";
+			+ " ORDER BY p.day DESC skip " + page + " limit 10";
     database.runCypherQuery(query, null, callback);
 }
 
@@ -24,7 +24,7 @@ module.exports.getAllPostAndSharedOfUser = function(userID, skip, callback) {
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
 			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id "
-			+ " ORDER BY p.day DESC skip " + 10*skip + " limit 10";
+			+ " ORDER BY p.day DESC skip " + skip + " limit 10";
    	database.runCypherQuery(query, null, callback);
 }
 
