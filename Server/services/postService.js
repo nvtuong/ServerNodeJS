@@ -8,7 +8,7 @@ module.exports.getAllPostOfFriendsService = function(req, res) {
 };
 
 module.exports.getAllPostOfUserService = function(req, res) {
-	postDAO.getAllPostAndSharedOfUser(req.body.userID, function(err, result) {
+	postDAO.getAllPostAndSharedOfUser(req.body.userID, req.body.page, function(err, result) {
 		postCallback.getAllPostOfUserCallback(res, err, result);
 	});
 };

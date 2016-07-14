@@ -2,7 +2,7 @@ var commentDAO = require('../database/commentDAO.js');
 var commentCallback = require('../libs/commentCallback.js');
 
 module.exports.getAllCommentsOfPostService = function(req, res) {
-	commentDAO.getAllCommentsOfPost(req.body.postID, function(err, result){
+	commentDAO.getAllCommentsOfPost(req.body.postID, req.body.skip, function(err, result){
 		commentCallback.getAllCommentsOfPostCallback(res, err, result);
 	});
 };

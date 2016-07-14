@@ -16,7 +16,7 @@ module.exports.getAllPostOfFriends = function(userID, page, callback) {
 
 // return a list of Post model contains posts which has been shared or post by a user
 // limit 20 post per one request
-module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
+module.exports.getAllPostAndSharedOfUser = function(userID, skip, callback) {
 	var query = "match (u:User{id:'" + userID + "'}) - [r :POST|:SHARE]-> (p:Post) "
 			+ " Optional match (p) <- [s:SHARE] - (u1:User) "
 			+ " Optional match (p) <- [l:LIKE] - (u2:User) "
@@ -24,7 +24,7 @@ module.exports.getAllPostAndSharedOfUser = function(userID, callback) {
 			+ " Optional match (u) -[iss:LIKE]-> (p) "
 			+ " return p.id , p.content, p.listImage, p.Latitude, p.Longitude, p.day, p.feeling, u.name, u.avatar, r.name, "
 			+ " count (distinct s) as numShared, count (distinct l) as numLiked, count (distinct h) as numComment, count (distinct iss) as isYouLike, u.id "
-			+ " ORDER BY p.day DESC limit 20";
+			+ " ORDER BY p.day DESC skip " + 10*skip + " limit 10";
    	database.runCypherQuery(query, null, callback);
 }
 
