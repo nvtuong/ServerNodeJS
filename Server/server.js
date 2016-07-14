@@ -88,6 +88,7 @@ app.post('/api/createNewCommentTourPost', commentService.createNewCommentTourPos
 app.post('/api/getUserNotification', notificationService.getUserNotificationService);
 app.post('/api/makeNotificationPost', notificationService.makeNotificationPostService);
 app.post('/api/deleteNotification', notificationService.deleteNotificationService);
+app.post('/api/loadStartNotification', notificationService.loadStartNotificationService);
 
 /*-----------------------------------END----------------------------------------------*/
 

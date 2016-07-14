@@ -40,3 +40,12 @@ module.exports.makeNotificationPost = function(userID, Latitude, Longitude, Lati
 			+ " return 1 as hasFound";
     database.runCypherQuery(query, null, callback);
 }
+
+module.exports.loadStartNotification = function(userID, callback) {
+	var query = "match (u:User{id : '" + userID + "'}) "
+	+ " optional match (u) <- [m:NOTIFICATION{content : 'message'}] - () "
+	+ " optional match (u) <- [a:NOTIFICATION{content : 'add'}] - () "
+	+ " optional match (u) <- [n:NOTIFICATION] - () where n.content <> 'add' and n.content <> 'message' "
+	+ " return count (distinct m) as numMessage, count (distinct a) as numFriend, count (distinct n) as numNotification";
+    database.runCypherQuery(query, null, callback);
+}

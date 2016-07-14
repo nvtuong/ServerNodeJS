@@ -49,3 +49,17 @@ module.exports.deleteNotificationCallback = function(response, err, result) {
 		response.send();
 	}
 }
+
+
+module.exports.loadStartNotificationCallback = function(response, err, result) {
+	console.log("loadStartNotificationCallback");
+	if(err || result.data[0] == null){
+		responseBadRequest(response, err);
+	}
+	else {
+		var data = result.data[0];
+		var notification = {numMessage : data[0], numFriend : data[1], numNotification : data[2]};
+		response.status(200);
+		response.send(notification);
+	}
+}

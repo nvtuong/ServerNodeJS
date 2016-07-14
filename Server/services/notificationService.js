@@ -20,3 +20,9 @@ module.exports.deleteNotificationService = function(req, res) {
 		notificationCallback.deleteNotificationCallback(res, err, result);
 	});
 };
+
+module.exports.loadStartNotificationService = function(req, res) {
+	notificationDAO.loadStartNotification(req.body.userID, function(err, result) {
+		notificationCallback.loadStartNotificationCallback(res, err, result);
+	});
+};
