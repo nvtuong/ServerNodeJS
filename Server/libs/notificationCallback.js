@@ -34,7 +34,8 @@ module.exports.makeNotificationPostCallback = function(response, err, result) {
 	else{
 		console.log(result);
 		response.status(200);
-		response.send();
+		var number = result.data.length;
+		response.send(number.toString());
 	}
 }
 
